@@ -4,7 +4,6 @@ public class Gost extends Osoba {
 	public Gost(String ime, String prezime, String pol, String datumStr, String adresa, String brojTelefona,
 			String email, String brPasosa) {
 		super(ime, prezime, pol, datumStr, adresa, brojTelefona, email, brPasosa);
-		// TODO Auto-generated constructor stub
 		
 
 		
