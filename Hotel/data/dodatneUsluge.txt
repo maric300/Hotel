@@ -1,0 +1,8 @@
+doručak;2
+ručak;4
+večera;3
+klima;1
+terasa;3
+parking;3
+bilijar;3
+kuhinja;5

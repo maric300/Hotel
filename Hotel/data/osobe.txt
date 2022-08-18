@@ -1,0 +1,6 @@
+gost;Branko;Maric;musko;6.3.2002.;0616940239;Milutina Ostojiceva 82;maric300;branas02
+zaposlen;RECEPCIONER;Branka;Milankovic;zensko;6.3.2002.;0616940239;Milutina Ostojiceva 82;mranka3;1234;2;4;42000
+gost;asd;asd;Musko;01.01.2000.;asd;asd;asda;sd
+gost;asd;awdws;Zensko;03.06.2002.;awds;awd;ad;12345
+gost;Ilija;Beslin;Musko;27.03.2002.;Teodora Mandica;061235123;ilija@gmail.com;1234567
+zaposlen;RECEPCIONER;Slavica;Slavic;Zensko;04.03.2003.;Bulevar Oslobodjenja 17, Novi Sad;0611234657;slavica@gmail.com;123123123;3;1;20000
