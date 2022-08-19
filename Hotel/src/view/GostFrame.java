@@ -2,9 +2,13 @@ package view;
 import java.awt.BorderLayout;
 import java.awt.EventQueue;
 
+import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.border.EmptyBorder;
+
+import manage.ManagerFactory;
+
 import javax.swing.JToolBar;
 import javax.swing.JPopupMenu;
 import java.awt.Component;
@@ -17,6 +21,8 @@ import javax.swing.JLabel;
 import javax.swing.JTextPane;
 import javax.swing.JTextArea;
 import net.miginfocom.swing.MigLayout;
+import java.awt.event.ActionListener;
+import java.awt.event.ActionEvent;
 
 public class GostFrame extends JFrame {
 
@@ -25,23 +31,23 @@ public class GostFrame extends JFrame {
 	/**
 	 * Launch the application.
 	 */
-	public static void main(String[] args) {
-		EventQueue.invokeLater(new Runnable() {
-			public void run() {
-				try {
-					GostFrame frame = new GostFrame();
-					frame.setVisible(true);
-				} catch (Exception e) {
-					e.printStackTrace();
-				}
-			}
-		});
-	}
+//	public static void main(String[] args) {
+//		EventQueue.invokeLater(new Runnable() {
+//			public void run() {
+//				try {
+//					GostFrame frame = new GostFrame();
+//					frame.setVisible(true);
+//				} catch (Exception e) {
+//					e.printStackTrace();
+//				}
+//			}
+//		});
+//	}
 
 	/**
 	 * Create the frame.
 	 */
-	public GostFrame() {
+	public GostFrame(ManagerFactory factoryMng) {
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		setBounds(100, 100, 450, 300);
 		
@@ -59,7 +65,18 @@ public class GostFrame extends JFrame {
 		contentPane.setLayout(new MigLayout("", "[][][]", "[][][]"));
 		
 		JLabel lblNewLabel = new JLabel("<html>Dobrodošli u hotel aplikaciju. Molimo vas izaberite jednu od stavki iz taba za navigaciju.</html>");
-		contentPane.add(lblNewLabel, "cell 1 2,alignx center,growy");
+		contentPane.add(lblNewLabel, "cell 1 2,alignx center");
+		
+		JButton btnNapraviRezervaciju = new JButton("Napravi rezervaciju");
+		btnNapraviRezervaciju.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				NapraviRezervaciju nr = new NapraviRezervaciju(factoryMng);
+				nr.setVisible(true);
+			}
+		});
+		contentPane.add(btnNapraviRezervaciju, "cell 1 3");
+		
+		
 	}
 	private static void addPopup(Component component, final JPopupMenu popup) {
 		component.addMouseListener(new MouseAdapter() {

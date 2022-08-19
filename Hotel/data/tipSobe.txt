@@ -1,0 +1,2 @@
+1;jednokrevetna
+2;dvokrevetna

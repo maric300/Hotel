@@ -7,12 +7,14 @@ public class ManagerFactory {
 	private GostManager gostMng;
 	private DodatnaUslugaManager uslugaMng;
 	private ZaposlenManager zaposlenMng;
+	private TipSobeManager tipSobeMng;
 	
 	public ManagerFactory(AppSettings appSettings) {
 		this.appSettings = appSettings;
 		this.gostMng = new GostManager(this.appSettings.getGostFilename());
 		this.uslugaMng = new DodatnaUslugaManager(this.appSettings.getDodatneUslugeFilename());
 		this.zaposlenMng = new ZaposlenManager(this.appSettings.getZaposlenFilename());
+		this.tipSobeMng = new TipSobeManager(this.appSettings.getTipSobeFilename());
 	}
 	
 	public GostManager getGostMng() {
@@ -27,14 +29,21 @@ public class ManagerFactory {
 		return zaposlenMng;
 	}
 	
+	public TipSobeManager getTipSobeMng() {
+		// TODO Auto-generated method stub
+		return tipSobeMng;
+	}
+	
 	public void loadData() {
 		this.gostMng.loadData();
 		this.uslugaMng.loadData();
 		this.zaposlenMng.loadData();
+		this.tipSobeMng.loadData();
 	}
 	
 	public void saveData() {
 		this.gostMng.saveData();
 		this.zaposlenMng.saveData();
+		this.tipSobeMng.saveData();
 	}
 }

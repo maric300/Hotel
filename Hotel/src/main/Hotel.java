@@ -7,7 +7,7 @@ import view.MainFrame;
 
 public class Hotel {
 	public static void main(String[] args) {
-		AppSettings appSettings = new AppSettings("data/gosti.txt", "data/zaposleni.txt", "dodatneUsluge.txt");
+		AppSettings appSettings = new AppSettings("data/gosti.txt", "data/zaposleni.txt", "dodatneUsluge.txt", "data/tipSobe.txt");
 		
 		ManagerFactory controlers = new ManagerFactory(appSettings);
 		controlers.loadData();

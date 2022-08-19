@@ -8,6 +8,7 @@ import java.util.List;
 
 import entity.DodatnaUsluga;
 import entity.Gost;
+import entity.TipSobe;
 
 public class DodatnaUslugaManager {
 	
@@ -19,6 +20,16 @@ public class DodatnaUslugaManager {
 		this.listaDodatnihUsluga = new ArrayList<DodatnaUsluga>();
 		
 	}
+	
+	public DodatnaUsluga NameToObject(String name) {
+		for (DodatnaUsluga dodatnaUsluga : listaDodatnihUsluga) {
+			if (dodatnaUsluga.getNaziv().equals(name)) {
+				return dodatnaUsluga;
+			}
+		}
+		return null;
+	}
+
 	
 	public boolean loadData() {
 		try {

@@ -20,5 +20,8 @@ public class TipSobe {
 	public void setNaziv(String naziv) {
 		this.naziv = naziv;
 	}
+	public String toFileString() {
+		return this.getBrojMesta() + ";" + this.getNaziv();
+	}
 	
 }

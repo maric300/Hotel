@@ -1,37 +1,68 @@
 package entity;
 
 public class Rezervacija {
-	private String status;
-	private int idRezervacije;
-	private int idSobe;
+	public enum Status {
+		NA_CEKANJU,
+		POTVRDJENA,
+		ODBIJENA,
+		OTKAZANA,
+	};
+	private Status status;
+	private TipSobe tipSobe;
+	private DodatnaUsluga dodatnaUsluga;
+	private String checkInDateStr;
+	private String checkOutDateStr;
 	
-	public Rezervacija(String status, int idRezervacije, int idSobe) {
+	public Rezervacija(Status status, TipSobe tipSobe, DodatnaUsluga dodatnaUsluga, String checkInDateStr, String checkOutDateStr) {
 		this.status = status;
-		this.idRezervacije = idRezervacije;
-		this.idSobe = idSobe;
+		this.tipSobe = tipSobe;
+		this.dodatnaUsluga = dodatnaUsluga;
+		this.checkInDateStr = checkInDateStr;
+		this.checkOutDateStr = checkOutDateStr;
 	}
 
-	public String getStatus() {
+	public Status getStatus() {
 		return status;
 	}
 
-	public void setStatus(String status) {
+	public void setStatus(Status status) {
 		this.status = status;
 	}
 
-	public int getIdRezervacije() {
-		return idRezervacije;
+	public TipSobe getTipSobe() {
+		return tipSobe;
 	}
 
-	public void setIdRezervacije(int idRezervacije) {
-		this.idRezervacije = idRezervacije;
+	public void setTipSobe(TipSobe tipSobe) {
+		this.tipSobe = tipSobe;
 	}
 
-	public int getIdSobe() {
-		return idSobe;
+	public DodatnaUsluga getDodatnaUsluga() {
+		return dodatnaUsluga;
 	}
 
-	public void setIdSobe(int idSobe) {
-		this.idSobe = idSobe;
+	public void setDodatnaUsluga(DodatnaUsluga dodatnaUsluga) {
+		this.dodatnaUsluga = dodatnaUsluga;
+	}
+
+	public String getCheckInDateStr() {
+		return checkInDateStr;
+	}
+
+	public void setCheckInDateStr(String checkInDateStr) {
+		this.checkInDateStr = checkInDateStr;
+	}
+
+	public String getCheckOutDateStr() {
+		return checkOutDateStr;
+	}
+
+	public void setCheckOutDateStr(String checkOutDateStr) {
+		this.checkOutDateStr = checkOutDateStr;
+	}
+
+	public String toFileString() {
+		// TODO Auto-generated method stub
+		return this.getStatus().name() + ";" + this.getTipSobe().getNaziv() + ";" + this.getDodatnaUsluga().getNaziv() + ";" + this.getCheckInDateStr() + ";" + this.getCheckOutDateStr();
 	}
 }

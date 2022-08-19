@@ -116,7 +116,7 @@ public class MainFrame extends JFrame {
 						if (gost.getEmail().equals(username) && gost.getBrPasosa().equals(password)) {
 							dialog.setVisible(false);
 							dialog.dispose();
-							GostFrame gf = new GostFrame();
+							GostFrame gf = new GostFrame(managers);
 							gf.setVisible(true);
 						}
 					}
