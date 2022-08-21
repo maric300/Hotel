@@ -14,6 +14,10 @@ import javax.swing.JPanel;
 import javax.swing.border.EmptyBorder;
 
 import entity.TipSobe;
+import entity.DodatnaUsluga;
+import entity.Gost;
+import entity.Rezervacija;
+import entity.Rezervacija.Status;
 import manage.ManagerFactory;
 import net.miginfocom.swing.MigLayout;
 import java.awt.event.ActionListener;
@@ -42,14 +46,14 @@ public class NapraviRezervaciju extends JFrame {
 	/**
 	 * Create the frame.
 	 */
-	public NapraviRezervaciju(ManagerFactory factoryMng) {
+	public NapraviRezervaciju(ManagerFactory factoryMng, Gost ulogovaniGost) {
 		setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
 		setTitle("Rezervacija");
 		setBounds(100, 100, 296, 200);
 		contentPane = new JPanel();
 		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
 		setContentPane(contentPane);
-		contentPane.setLayout(new MigLayout("wrap, fill", "[][][][]", "[][][]"));
+		contentPane.setLayout(new MigLayout("wrap, fill", "[][][][]", "[][][][][]"));
 		JLabel lbTipSobe = new JLabel("Tip sobe");
 		contentPane.add(lbTipSobe, "cell 0 0");
 		
@@ -58,8 +62,19 @@ public class NapraviRezervaciju extends JFrame {
 		for (int i = 0; i < tipoviSobe.size(); i++) {
 			s1[i] = tipoviSobe.get(i).getNaziv();
 		}
-		JComboBox comboBoxPosao = new JComboBox(s1);
-		contentPane.add(comboBoxPosao, "cell 1 0, span 3");
+		JComboBox comboBoxTipSobe = new JComboBox(s1);
+		contentPane.add(comboBoxTipSobe, "cell 1 0, span 3");
+		
+		JLabel lbDodatnaUsluga = new JLabel("Dodatne usluge");
+		contentPane.add(lbDodatnaUsluga);
+		
+		List<DodatnaUsluga> dodatneUsluge = factoryMng.getUslugaMng().getDodatneUsluge();
+		String[] s2 = new String[dodatneUsluge.size()];
+		for (int i = 0; i < dodatneUsluge.size(); i++) {
+			s2[i] = dodatneUsluge.get(i).getNaziv();
+		}
+		JComboBox comboBoxUsluga = new JComboBox(s2);
+		contentPane.add(comboBoxUsluga, "span 3");
 		
 		JLabel lbCheckInDate = new JLabel("check-in datum");
 		contentPane.add(lbCheckInDate);
@@ -111,6 +126,21 @@ public class NapraviRezervaciju extends JFrame {
 		
 		JButton btnRezervisi = new JButton("Rezerviši");
 		contentPane.add(btnRezervisi, "span 2, gaptop 20px, alignx center");
+		btnRezervisi.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				Status status = Status.NA_CEKANJU;
+				String tipSobestr = comboBoxTipSobe.getSelectedItem().toString();
+				TipSobe tipSobe = factoryMng.getTipSobeMng().NameToObject(tipSobestr);
+				String dodatnaUslugaStr = comboBoxUsluga.getSelectedItem().toString();
+				DodatnaUsluga dodatnaUsluga = factoryMng.getUslugaMng().NameToObject(dodatnaUslugaStr);
+				String checkInDateStr = choiceDay.getSelectedItem() + "." + choiceMonth.getSelectedItem() + "." + choiceYear.getSelectedItem() + ".";
+				String checkOutdateStr = choiceDay1.getSelectedItem() + "." + choiceMonth1.getSelectedItem() + "." + choiceYear1.getSelectedItem() + ".";
+				
+				factoryMng.getRezervacijaMng().getRezervacije().add(new Rezervacija(status, ulogovaniGost.getEmail(), tipSobe, dodatnaUsluga, checkInDateStr, checkOutdateStr));
+				dispose();
+			}
+		});
+		
 		
 		JButton btnOdustani = new JButton("Odustani");
 		btnOdustani.addActionListener(new ActionListener() {

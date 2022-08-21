@@ -20,13 +20,17 @@ import entity.Zaposlen.Posao.*;
 
 public class RezervacijaManager {
 	private List<Rezervacija> rezervacije;
+	private TipSobeManager tipSobeMng;
+	private DodatnaUslugaManager dodatnaUslugaMng;
 	
 	private String rezervacijaFile;
 	
-	public RezervacijaManager(String rezervacijaFile) {
+	public RezervacijaManager(String rezervacijaFile, TipSobeManager tipSobeMng, DodatnaUslugaManager dodatnaUslugaMng) {
 		super();
 		this.rezervacijaFile = rezervacijaFile;
 		this.rezervacije = new ArrayList<Rezervacija>();
+		this.tipSobeMng = tipSobeMng;
+		this.dodatnaUslugaMng = dodatnaUslugaMng;
 	}
 	
 	
@@ -51,7 +55,7 @@ public class RezervacijaManager {
 			while ((linija = br.readLine()) != null) {
 				System.out.println(linija);
 				String[] tokeni = linija.split(";");
-				this.rezervacije.add(new Rezervacija(Status.valueOf(tokeni[0]), TipSobeManager.NameToObject(tokeni[1])));
+				this.rezervacije.add(new Rezervacija(Status.valueOf(tokeni[0]), tokeni[1] ,tipSobeMng.NameToObject(tokeni[2]), dodatnaUslugaMng.NameToObject(tokeni[3]), tokeni[4], tokeni[5]));
 			}
 			br.close();
 		} catch (IOException e) {

@@ -12,9 +12,11 @@ public class Rezervacija {
 	private DodatnaUsluga dodatnaUsluga;
 	private String checkInDateStr;
 	private String checkOutDateStr;
+	private String usernameGosta;
 	
-	public Rezervacija(Status status, TipSobe tipSobe, DodatnaUsluga dodatnaUsluga, String checkInDateStr, String checkOutDateStr) {
+	public Rezervacija(Status status,String usernameGosta, TipSobe tipSobe, DodatnaUsluga dodatnaUsluga, String checkInDateStr, String checkOutDateStr) {
 		this.status = status;
+		this.usernameGosta = usernameGosta;
 		this.tipSobe = tipSobe;
 		this.dodatnaUsluga = dodatnaUsluga;
 		this.checkInDateStr = checkInDateStr;
@@ -61,8 +63,16 @@ public class Rezervacija {
 		this.checkOutDateStr = checkOutDateStr;
 	}
 
+	public String getUsernameGosta() {
+		return usernameGosta;
+	}
+
+	public void setUsernameGosta(String usernameGosta) {
+		this.usernameGosta = usernameGosta;
+	}
+
 	public String toFileString() {
 		// TODO Auto-generated method stub
-		return this.getStatus().name() + ";" + this.getTipSobe().getNaziv() + ";" + this.getDodatnaUsluga().getNaziv() + ";" + this.getCheckInDateStr() + ";" + this.getCheckOutDateStr();
+		return this.getStatus().name() + ";" + this.getUsernameGosta() + ";" + this.getTipSobe().getNaziv() + ";" + this.getDodatnaUsluga().getNaziv() + ";" + this.getCheckInDateStr() + ";" + this.getCheckOutDateStr();
 	}
 }

@@ -10,6 +10,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Scanner;
 
+import entity.DodatnaUsluga;
 import entity.Gost;
 import entity.Osoba;
 import entity.Zaposlen;
@@ -37,7 +38,14 @@ public class GostManager {
 		this.gosti = gosti;
 	}
 
-
+	public Gost NameToObject(String name) {
+		for (Gost gost : gosti) {
+			if (gost.getEmail().equals(name)) {
+				return gost;
+			}
+		}
+		return null;
+	}
 
 	public boolean loadData() {
 

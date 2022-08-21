@@ -21,6 +21,10 @@ public class DodatnaUslugaManager {
 		
 	}
 	
+	public List<DodatnaUsluga> getDodatneUsluge() {
+		return listaDodatnihUsluga;
+	}
+	
 	public DodatnaUsluga NameToObject(String name) {
 		for (DodatnaUsluga dodatnaUsluga : listaDodatnihUsluga) {
 			if (dodatnaUsluga.getNaziv().equals(name)) {
