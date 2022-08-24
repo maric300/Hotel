@@ -53,9 +53,13 @@ public class RezervacijaManager {
 			BufferedReader br = new BufferedReader(new FileReader(this.rezervacijaFile));
 			String linija = null;
 			while ((linija = br.readLine()) != null) {
-				System.out.println(linija);
 				String[] tokeni = linija.split(";");
-				this.rezervacije.add(new Rezervacija(Status.valueOf(tokeni[0]), tokeni[1] ,tipSobeMng.NameToObject(tokeni[2]), dodatnaUslugaMng.NameToObject(tokeni[3]), tokeni[4], tokeni[5]));
+				String[] tokeniUsluge = tokeni[3].split(":");
+				List<String> tokeniUslugeList = new ArrayList<String>();
+				for (String usluga : tokeniUsluge) {
+					tokeniUslugeList.add(usluga);
+				}
+				this.rezervacije.add(new Rezervacija(Status.valueOf(tokeni[0]), tokeni[1] ,tipSobeMng.NameToObject(tokeni[2]), dodatnaUslugaMng.ListToObject(tokeniUslugeList), tokeni[4], tokeni[5]));
 			}
 			br.close();
 		} catch (IOException e) {

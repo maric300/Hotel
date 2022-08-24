@@ -6,6 +6,8 @@ import javax.swing.JPanel;
 import javax.swing.border.EmptyBorder;
 
 import manage.ManagerFactory;
+import model.GostModel;
+import viewTable.TabelaZaposlenih;
 
 import javax.swing.JMenuBar;
 import javax.swing.JMenu;
@@ -15,6 +17,7 @@ import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
+import java.util.Comparator;
 
 public class AdminFrame extends JFrame {
 
@@ -68,7 +71,7 @@ public class AdminFrame extends JFrame {
 		mntmRegistrujGosta.addActionListener(new ActionListener() {
 			@SuppressWarnings("deprecation")
 			public void actionPerformed(ActionEvent e) {
-				RegistracijaGosta rg = new RegistracijaGosta(factoryMng);
+				RegistracijaGosta rg = new RegistracijaGosta(null, factoryMng, null);
 				rg.show();
 			}
 		});
@@ -78,7 +81,7 @@ public class AdminFrame extends JFrame {
 		mntmRegistrujRecepcionera.addActionListener(new ActionListener() {
 			@SuppressWarnings("deprecation")
 			public void actionPerformed(ActionEvent e) {
-				RegistracijaZaposlenog rz = new RegistracijaZaposlenog(factoryMng);
+				RegistracijaZaposlenog rz = new RegistracijaZaposlenog(null, factoryMng, null);
 				rz.show();
 			}
 		});
@@ -98,10 +101,17 @@ public class AdminFrame extends JFrame {
 		
 		JMenuItem mntmPrikaziZaposlene = new JMenuItem("Prikaži zaposlene");
 		mnPrikazi.add(mntmPrikaziZaposlene);
+		mntmPrikaziZaposlene.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				TabelaZaposlenih tz = new TabelaZaposlenih(factoryMng);
+				tz.setVisible(true);
+			}
+		});
 //		contentPane = new JPanel();
 //		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
 //		contentPane.setLayout(new BorderLayout(0, 0));
 //		setContentPane(contentPane);
 	}
+	
 
 }

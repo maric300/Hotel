@@ -10,7 +10,9 @@ import javax.swing.JButton;
 import javax.swing.JComboBox;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
+import javax.swing.JList;
 import javax.swing.JPanel;
+import javax.swing.ListSelectionModel;
 import javax.swing.border.EmptyBorder;
 
 import entity.TipSobe;
@@ -49,7 +51,7 @@ public class NapraviRezervaciju extends JFrame {
 	public NapraviRezervaciju(ManagerFactory factoryMng, Gost ulogovaniGost) {
 		setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
 		setTitle("Rezervacija");
-		setBounds(100, 100, 296, 200);
+		setBounds(100, 100, 404, 345);
 		contentPane = new JPanel();
 		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
 		setContentPane(contentPane);
@@ -73,7 +75,8 @@ public class NapraviRezervaciju extends JFrame {
 		for (int i = 0; i < dodatneUsluge.size(); i++) {
 			s2[i] = dodatneUsluge.get(i).getNaziv();
 		}
-		JComboBox comboBoxUsluga = new JComboBox(s2);
+		JList comboBoxUsluga = new JList(s2);
+		comboBoxUsluga.setSelectionMode(ListSelectionModel.MULTIPLE_INTERVAL_SELECTION);
 		contentPane.add(comboBoxUsluga, "span 3");
 		
 		JLabel lbCheckInDate = new JLabel("check-in datum");
@@ -120,10 +123,9 @@ public class NapraviRezervaciju extends JFrame {
 			choiceMonth1.add(String.valueOf(i));
 		}
 
-		for(int i = Year.now().getValue();i < Year.now().getValue() + 1;i++) {
+		for(int i = Year.now().getValue();i < Year.now().getValue() + 2;i++) {
 			choiceYear1.add(String.valueOf(i));
 		}
-		
 		JButton btnRezervisi = new JButton("Rezerviši");
 		contentPane.add(btnRezervisi, "span 2, gaptop 20px, alignx center");
 		btnRezervisi.addActionListener(new ActionListener() {
@@ -131,12 +133,13 @@ public class NapraviRezervaciju extends JFrame {
 				Status status = Status.NA_CEKANJU;
 				String tipSobestr = comboBoxTipSobe.getSelectedItem().toString();
 				TipSobe tipSobe = factoryMng.getTipSobeMng().NameToObject(tipSobestr);
-				String dodatnaUslugaStr = comboBoxUsluga.getSelectedItem().toString();
-				DodatnaUsluga dodatnaUsluga = factoryMng.getUslugaMng().NameToObject(dodatnaUslugaStr);
+				List<String> dodatnaUslugaStrList = comboBoxUsluga.getSelectedValuesList();
+				System.out.println(dodatnaUslugaStrList);
+				List<DodatnaUsluga> dodatnaUslugaList = factoryMng.getUslugaMng().ListToObject(dodatnaUslugaStrList);
 				String checkInDateStr = choiceDay.getSelectedItem() + "." + choiceMonth.getSelectedItem() + "." + choiceYear.getSelectedItem() + ".";
 				String checkOutdateStr = choiceDay1.getSelectedItem() + "." + choiceMonth1.getSelectedItem() + "." + choiceYear1.getSelectedItem() + ".";
 				
-				factoryMng.getRezervacijaMng().getRezervacije().add(new Rezervacija(status, ulogovaniGost.getEmail(), tipSobe, dodatnaUsluga, checkInDateStr, checkOutdateStr));
+				factoryMng.getRezervacijaMng().getRezervacije().add(new Rezervacija(status, ulogovaniGost.getEmail(), tipSobe, dodatnaUslugaList, checkInDateStr, checkOutdateStr));
 				dispose();
 			}
 		});

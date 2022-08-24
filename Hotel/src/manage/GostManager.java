@@ -46,6 +46,19 @@ public class GostManager {
 		}
 		return null;
 	}
+	
+	public void edit(String ime, String prezime, String pol, String datumStr, String adresa, String brojTelefona,
+			String email, String brPasosa) {
+		Gost g = this.NameToObject(email);
+		g.setIme(ime);
+		g.setPrezime(prezime);
+		g.setPol(pol);
+		g.setDatumStr(datumStr);
+		g.setAdresa(adresa);
+		g.setBrojTelefona(brojTelefona);
+		g.setEmail(email);
+		g.setBrPasosa(brPasosa);
+	}
 
 	public boolean loadData() {
 
@@ -77,6 +90,14 @@ public class GostManager {
 			return false;
 		}
 		return true;
+	}
+
+
+
+	public void remove(String email) {
+		Gost g = this.NameToObject(email);
+		gosti.remove(g);
+		
 	}
 	
 	

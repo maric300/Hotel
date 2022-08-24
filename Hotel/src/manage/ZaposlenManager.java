@@ -73,6 +73,45 @@ public class ZaposlenManager {
 		}
 		return true;
 	}
+
+
+
+	public Zaposlen NameToObject(String name) {
+		for (Zaposlen zaposlen : zaposleni) {
+			if (zaposlen.getEmail().equals(name)) {
+				return zaposlen;
+			}
+		}
+		return null;
+	}
+
+
+
+	public void remove(String email) {
+		Zaposlen z = this.NameToObject(email);
+		zaposleni.remove(z);
+		
+	}
+
+
+
+	public void edit(Posao valueOf, String ime, String prezime, String pol, String datumRodjenjaStr, String adresa,
+			String brojTelefona, String email, String brPasosa, int nivoStrucneSpreme, int staz) {
+		Zaposlen z = this.NameToObject(email);
+		z.setPosao(valueOf);
+		z.setIme(ime);
+		z.setPrezime(prezime);
+		z.setPol(pol);
+		z.setDatumStr(datumRodjenjaStr);
+		z.setAdresa(adresa);
+		z.setBrojTelefona(brojTelefona);
+		z.setEmail(email);
+		z.setBrPasosa(brPasosa);
+		z.setNivoStrucneSpreme(nivoStrucneSpreme);
+		z.setStaz(staz);
+		z.setPlata(z.getPlata());
+		
+	}
 	
 	
 }

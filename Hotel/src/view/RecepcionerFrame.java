@@ -59,7 +59,7 @@ public class RecepcionerFrame extends JFrame {
 		JMenuItem mntmRegistrujGosta = new JMenuItem("Registruj gosta");
 		mntmRegistrujGosta.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				RegistracijaGosta rg = new RegistracijaGosta(factoryMng);
+				RegistracijaGosta rg = new RegistracijaGosta(null, factoryMng, null);
 				rg.show();
 			}
 		});

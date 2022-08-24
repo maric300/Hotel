@@ -63,7 +63,7 @@ public class RegistracijaZaposlenog extends JFrame {
 	/**
 	 * Create the frame.
 	 */
-	public RegistracijaZaposlenog(ManagerFactory factoryMng) {
+	public RegistracijaZaposlenog(JFrame parent, ManagerFactory factoryMng, Zaposlen zaposlenZaEdit) {
 		setTitle("Registracija zaposlenog");
 		setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
 		setBounds(100, 100, 450, 478);
@@ -261,8 +261,12 @@ public class RegistracijaZaposlenog extends JFrame {
 				}
 				
 				if (isOk.equals(true)) {
-					
-					factoryMng.getZaposlenManager().getZaposleni().add(new Zaposlen(Posao.valueOf(posao), ime, prezime, pol, datumRodjenjaStr, adresa, brojTelefona, email, brPasosa, Integer.parseInt(nivoStrucneSpreme), Integer.parseInt(staz)));
+					if (zaposlenZaEdit == null) {
+						factoryMng.getZaposlenManager().getZaposleni().add(new Zaposlen(Posao.valueOf(posao), ime, prezime, pol, datumRodjenjaStr, adresa, brojTelefona, email, brPasosa, Integer.parseInt(nivoStrucneSpreme), Integer.parseInt(staz)));
+					}
+					else {
+						factoryMng.getZaposlenManager().edit(Posao.valueOf(posao), ime, prezime, pol, datumRodjenjaStr, adresa, brojTelefona, email, brPasosa, Integer.parseInt(nivoStrucneSpreme), Integer.parseInt(staz));
+					}
 					dispose();
 				}
 			}
@@ -290,16 +294,59 @@ public class RegistracijaZaposlenog extends JFrame {
 		
 		 
 		
-		for(int i = 1;i < 32;i++) {
+		choiceDay.add("01");
+		choiceDay.add("02");
+		choiceDay.add("03");
+		choiceDay.add("04");
+		choiceDay.add("05");
+		choiceDay.add("06");
+		choiceDay.add("07");
+		choiceDay.add("08");
+		choiceDay.add("09");
+		
+		for(int i = 10;i < 32;i++) {
 			choiceDay.add(String.valueOf(i));
 		}
 		
-		for(int i = 1;i < 13;i++) {
+		choiceMonth.add("01");
+		choiceMonth.add("02");
+		choiceMonth.add("03");
+		choiceMonth.add("04");
+		choiceMonth.add("05");
+		choiceMonth.add("06");
+		choiceMonth.add("07");
+		choiceMonth.add("08");
+		choiceMonth.add("09");
+		
+		for(int i = 10;i < 13;i++) {
 			choiceMonth.add(String.valueOf(i));
 		}
 
 		for(int i = 1900;i < Year.now().getValue() - 14;i++) {
 			choiceYear.add(String.valueOf(i));
+		}
+		
+		if (zaposlenZaEdit != null) {
+			comboBoxPosao.setSelectedItem(zaposlenZaEdit.getPosao().name());
+			tfIme.setText(zaposlenZaEdit.getIme());
+			tfPrezime.setText(zaposlenZaEdit.getPrezime());
+			if (zaposlenZaEdit.getPol().equals("Musko")) {
+				rdbtnMuski.setSelected(true);
+			}
+			else {
+				rdbtnZenski.setSelected(true);
+			}
+			String datumRodjenjaStr = zaposlenZaEdit.getDatumStr();
+			LocalDate ld = LocalDate.parse(datumRodjenjaStr, DateTimeFormatter.ofPattern("dd.MM.uuuu."));
+			choiceDay.select(ld.getDayOfMonth() - 1);
+			choiceMonth.select(ld.getMonthValue() - 1);
+			choiceYear.select(String.valueOf(ld.getYear()));
+			tfAdresa.setText(zaposlenZaEdit.getAdresa());
+			tfBrTelefona.setText(zaposlenZaEdit.getBrojTelefona());
+			tfEmail.setText(zaposlenZaEdit.getEmail());
+			tfBrPasosa.setText(zaposlenZaEdit.getBrPasosa());
+			tfNivoStrucneSpreme.setText(String.valueOf(zaposlenZaEdit.getNivoStrucneSpreme()));
+			tfStaz.setText(String.valueOf(zaposlenZaEdit.getStaz()));
 		}
 
 	}

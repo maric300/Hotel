@@ -1,4 +1,4 @@
-package view;
+package viewTable;
 import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.EventQueue;
@@ -33,15 +33,17 @@ import javax.swing.table.AbstractTableModel;
 import javax.swing.table.TableRowSorter;
 
 import entity.Gost;
+import entity.Zaposlen;
 import manage.GostManager;
 import manage.ManagerFactory;
 import model.GostModel;
+import model.ZaposlenModel;
+import view.RegistracijaZaposlenog;
 
-public class TabelaKorisnika extends JFrame {
+public class TabelaZaposlenih extends JFrame {
 
 	private JPanel contentPane;
 	
-	private GostManager gostMng;
 	private ManagerFactory factoryMng;
 
 	protected JToolBar mainToolbar = new JToolBar();
@@ -52,7 +54,7 @@ public class TabelaKorisnika extends JFrame {
 	protected TableRowSorter<AbstractTableModel> tableSorter = new TableRowSorter<AbstractTableModel>();
 	protected JTable table;
 
-	public TabelaKorisnika(ManagerFactory factoryMng) {
+	public TabelaZaposlenih(ManagerFactory factoryMng) {
 		this.factoryMng = factoryMng;
 		setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
 		setBounds(100, 100, 450, 300);
@@ -77,7 +79,7 @@ public class TabelaKorisnika extends JFrame {
 		mainToolbar.setFloatable(false);		
 		add(mainToolbar, BorderLayout.NORTH);
 		
-		GostModel mdl = new GostModel(factoryMng.getGostMng());
+		ZaposlenModel mdl = new ZaposlenModel(factoryMng.getZaposlenManager());
 		table = new JTable(mdl);
 		table.getSelectionModel().setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
 		table.getTableHeader().setReorderingAllowed(false);
@@ -132,8 +134,8 @@ public class TabelaKorisnika extends JFrame {
 		
 		btnAdd.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				RegistracijaGosta rg = new RegistracijaGosta(TabelaKorisnika.this, factoryMng, null);
-				rg.setVisible(true);
+				RegistracijaZaposlenog rz = new RegistracijaZaposlenog(TabelaZaposlenih.this, factoryMng, null);
+				rz.setVisible(true);
 			}
 		});
 		
@@ -144,11 +146,11 @@ public class TabelaKorisnika extends JFrame {
 				if(red == -1) {
 					JOptionPane.showMessageDialog(null, "Morate odabrati red u tabeli.", "Greska", JOptionPane.WARNING_MESSAGE);
 				}else {
-					String email = table.getValueAt(red, 6).toString();
-					Gost g = factoryMng.getGostMng().NameToObject(email);
-					if(g != null) {
-						RegistracijaGosta add = new RegistracijaGosta(TabelaKorisnika.this, factoryMng, g);
-						add.setVisible(true);
+					String email = table.getValueAt(red, 7).toString();
+					Zaposlen z = factoryMng.getZaposlenManager().NameToObject(email);
+					if(z != null) {
+						RegistracijaZaposlenog rz = new RegistracijaZaposlenog(TabelaZaposlenih.this, factoryMng, z);
+						rz.setVisible(true);
 					}else {
 						JOptionPane.showMessageDialog(null, "Nije moguce pronaci odabranog gosta!", "Greska", JOptionPane.ERROR_MESSAGE);
 					}
@@ -163,17 +165,17 @@ public class TabelaKorisnika extends JFrame {
 				if(red == -1) {
 					JOptionPane.showMessageDialog(null, "Morate odabrati red u tabeli.", "Greska", JOptionPane.WARNING_MESSAGE);
 				}else {
-					String email = table.getValueAt(red, 6).toString();
-					Gost g = factoryMng.getGostMng().NameToObject(email);
-					if(g != null) {
-						int izbor = JOptionPane.showConfirmDialog(null,"Da li ste sigurni da zelite da obrisete gosta?", 
-								g.getIme() + " "+g.getPrezime() +" - Potvrda brisanja", JOptionPane.YES_NO_OPTION);
+					String email = table.getValueAt(red, 7).toString();
+					Zaposlen z = factoryMng.getZaposlenManager().NameToObject(email);
+					if(z != null) {
+						int izbor = JOptionPane.showConfirmDialog(null,"Da li ste sigurni da zelite da obrisete zaposlenog?", 
+								z.getIme() + " "+z.getPrezime() +" - Potvrda brisanja", JOptionPane.YES_NO_OPTION);
 						if(izbor == JOptionPane.YES_OPTION) {
-							factoryMng.getGostMng().remove(g.getEmail());
+							factoryMng.getZaposlenManager().remove(z.getEmail());
 							refreshData();
 						}
 					}else {
-						JOptionPane.showMessageDialog(null, "Nije moguce pronaci odabranog gosta!", "Greska", JOptionPane.ERROR_MESSAGE);
+						JOptionPane.showMessageDialog(null, "Nije moguce pronaci odabranog zaposlenog!", "Greska", JOptionPane.ERROR_MESSAGE);
 					}
 				}
 			}
@@ -186,7 +188,7 @@ public class TabelaKorisnika extends JFrame {
 	
 	// potrebno osvezavanje podataka u tabeli bez gasenja prozora
 	public void refreshData() {
-		GostModel sm = (GostModel)this.table.getModel();
+		ZaposlenModel sm = (ZaposlenModel)this.table.getModel();
 		sm.fireTableDataChanged();
 	}
 	
@@ -197,10 +199,10 @@ public class TabelaKorisnika extends JFrame {
 // Manuelni sorter - potrebno za razumevanje rada podrazumevanog sortera tabele
 	protected void sort(int index) {
 		// index of table column
-		this.factoryMng.getGostMng().getGosti().sort(new Comparator<Gost>() {
+		this.factoryMng.getZaposlenManager().getZaposleni().sort(new Comparator<Zaposlen>() {
 			int retVal = 0;
 			@Override
-			public int compare(Gost o1, Gost o2) {
+			public int compare(Zaposlen o1, Zaposlen o2) {
 				switch (index) {
 				case 0:
 //					retVal = o1.getIme().compareTo(o2.getIme());

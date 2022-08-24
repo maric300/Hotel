@@ -33,6 +33,18 @@ public class DodatnaUslugaManager {
 		}
 		return null;
 	}
+	
+	public List<DodatnaUsluga> ListToObject(List<String> dodatnaUslugaStrList) {
+		List<DodatnaUsluga> listaUslugaRet = new ArrayList<DodatnaUsluga>();
+		for(int i = 0;i< dodatnaUslugaStrList.size(); i++) {
+			for (DodatnaUsluga dodatnaUsluga : listaDodatnihUsluga) {
+				if (dodatnaUsluga.getNaziv().equals(dodatnaUslugaStrList.get(i))) {
+					listaUslugaRet.add(dodatnaUsluga);
+				}
+			}
+		}
+		return listaUslugaRet;
+	}
 
 	
 	public boolean loadData() {

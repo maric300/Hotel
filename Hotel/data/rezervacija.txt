@@ -1,1 +1,2 @@
-NA_CEKANJU;maric300;jednokrevetna;večera;3.3.2022.;7.3.2022.
+NA_CEKANJU;maric300;jednokrevetna;dorucak:bilijar:kuhinja;4.4.2022.;7.4.2022.
+NA_CEKANJU;maric300;dvokrevetna;dorucak:rucak:vecera;4.4.2022.;8.4.2022.

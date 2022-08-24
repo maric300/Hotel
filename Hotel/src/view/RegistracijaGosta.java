@@ -45,6 +45,7 @@ public class RegistracijaGosta extends JFrame {
 	private JTextField tfEmail;
 	private JTextField tfBrPasosa;
 	private JLabel lbError;
+	private Gost gostZaEdit;
 
 	/**
 	 * Launch the application.
@@ -65,10 +66,16 @@ public class RegistracijaGosta extends JFrame {
 	/**
 	 * Create the frame.
 	 */
-	public RegistracijaGosta(ManagerFactory factoryMng) {
+	public RegistracijaGosta(JFrame parent, ManagerFactory factoryMng, Gost gostZaEdit) {
+		this.gostZaEdit = gostZaEdit;
 		List<Gost> gosti;
 		gosti = factoryMng.getGostMng().getGosti();
-		setTitle("Registracija gosta");
+		if (gostZaEdit == null) {
+			setTitle("Registracija gosta");
+		}
+		else {
+			setTitle("Izmena gosta");
+		}
 		setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
 		setBounds(100, 100, 450, 354);
 		contentPane = new JPanel();
@@ -232,21 +239,14 @@ public class RegistracijaGosta extends JFrame {
 				}
 				
 				if (isOk.equals(true)) {
-							
-//					String noviGostStr = "\ngost" + ";" +  ime + ";" + prezime + ";" + pol + ";" + datumRodjenjaStr + ";" + adresa + ";" + brojTelefona + ";" + email + ";" + brPasosa;
-//					File file = new File("data/studenti.txt");
-//					try {
-//						FileWriter fw = new FileWriter(file, true);
-//						fw.write(noviGostStr);
-//						fw.close();
-//						dispose();
-//						
-//					} catch (IOException e1) {
-//						// TODO Auto-generated catch block
-//						e1.printStackTrace();
-//					}
 					
-					gosti.add(new Gost(ime, prezime, pol, datumRodjenjaStr, adresa, brojTelefona, email, brPasosa));
+					if (gostZaEdit == null) {
+						gosti.add(new Gost(ime, prezime, pol, datumRodjenjaStr, adresa, brojTelefona, email, brPasosa));
+					}
+					else {
+						factoryMng.getGostMng().edit(ime, prezime, pol, datumRodjenjaStr, adresa, brojTelefona, email, brPasosa);
+					}
+					((TabelaKorisnika) parent).refreshData();
 					dispose();
 					
 				}
@@ -269,17 +269,59 @@ public class RegistracijaGosta extends JFrame {
 		lbError.setForeground(Color.RED);
 		lbError.setBounds(10, 285, 210, 14);
 		contentPane.add(lbError);
+		choiceDay.add("01");
+		choiceDay.add("02");
+		choiceDay.add("03");
+		choiceDay.add("04");
+		choiceDay.add("05");
+		choiceDay.add("06");
+		choiceDay.add("07");
+		choiceDay.add("08");
+		choiceDay.add("09");
 		
-		for(int i = 1;i < 32;i++) {
+		for(int i = 10;i < 32;i++) {
 			choiceDay.add(String.valueOf(i));
 		}
 		
-		for(int i = 1;i < 13;i++) {
+		choiceMonth.add("01");
+		choiceMonth.add("02");
+		choiceMonth.add("03");
+		choiceMonth.add("04");
+		choiceMonth.add("05");
+		choiceMonth.add("06");
+		choiceMonth.add("07");
+		choiceMonth.add("08");
+		choiceMonth.add("09");
+		
+		for(int i = 10;i < 13;i++) {
 			choiceMonth.add(String.valueOf(i));
 		}
 
 		for(int i = 1900;i < Year.now().getValue() - 14;i++) {
 			choiceYear.add(String.valueOf(i));
 		}
+		
+		if (gostZaEdit != null) {
+			tfIme.setText(gostZaEdit.getIme());
+			tfPrezime.setText(gostZaEdit.getPrezime());
+			if (gostZaEdit.getPol().equals("Musko")) {
+				rdbtnMuski.setSelected(true);
+			}
+			else {
+				rdbtnZenski.setSelected(true);
+			}
+			
+//			String datumRodjenjaStr = choiceDay.getSelectedItem() + "." + choiceMonth.getSelectedItem() + "." + choiceYear.getSelectedItem() + ".";
+			String datumRodjenjaStr = gostZaEdit.getDatumStr();
+			LocalDate ld = LocalDate.parse(datumRodjenjaStr, DateTimeFormatter.ofPattern("dd.MM.uuuu."));
+			choiceDay.select(ld.getDayOfMonth() - 1);
+			choiceMonth.select(ld.getMonthValue() - 1);
+			choiceYear.select(String.valueOf(ld.getYear()));
+			tfAdresa.setText(gostZaEdit.getAdresa());
+			tfBrTelefona.setText(gostZaEdit.getBrojTelefona());
+			tfEmail.setText(gostZaEdit.getEmail());
+			tfBrPasosa.setText(gostZaEdit.getBrPasosa());
+		}
+		
 	}
 }

@@ -1,5 +1,8 @@
 package entity;
 
+import java.util.ArrayList;
+import java.util.List;
+
 public class Rezervacija {
 	public enum Status {
 		NA_CEKANJU,
@@ -9,16 +12,16 @@ public class Rezervacija {
 	};
 	private Status status;
 	private TipSobe tipSobe;
-	private DodatnaUsluga dodatnaUsluga;
+	private List<DodatnaUsluga> dodatnaUslugaList;
 	private String checkInDateStr;
 	private String checkOutDateStr;
 	private String usernameGosta;
 	
-	public Rezervacija(Status status,String usernameGosta, TipSobe tipSobe, DodatnaUsluga dodatnaUsluga, String checkInDateStr, String checkOutDateStr) {
+	public Rezervacija(Status status,String usernameGosta, TipSobe tipSobe, List<DodatnaUsluga> dodatnaUslugaList, String checkInDateStr, String checkOutDateStr) {
 		this.status = status;
 		this.usernameGosta = usernameGosta;
 		this.tipSobe = tipSobe;
-		this.dodatnaUsluga = dodatnaUsluga;
+		this.dodatnaUslugaList = dodatnaUslugaList;
 		this.checkInDateStr = checkInDateStr;
 		this.checkOutDateStr = checkOutDateStr;
 	}
@@ -39,12 +42,12 @@ public class Rezervacija {
 		this.tipSobe = tipSobe;
 	}
 
-	public DodatnaUsluga getDodatnaUsluga() {
-		return dodatnaUsluga;
+	public List<DodatnaUsluga> getDodatnaUslugaList() {
+		return dodatnaUslugaList;
 	}
 
-	public void setDodatnaUsluga(DodatnaUsluga dodatnaUsluga) {
-		this.dodatnaUsluga = dodatnaUsluga;
+	public void setDodatnaUslugaList(List<DodatnaUsluga> dodatnaUslugaList) {
+		this.dodatnaUslugaList = dodatnaUslugaList;
 	}
 
 	public String getCheckInDateStr() {
@@ -72,7 +75,13 @@ public class Rezervacija {
 	}
 
 	public String toFileString() {
-		// TODO Auto-generated method stub
-		return this.getStatus().name() + ";" + this.getUsernameGosta() + ";" + this.getTipSobe().getNaziv() + ";" + this.getDodatnaUsluga().getNaziv() + ";" + this.getCheckInDateStr() + ";" + this.getCheckOutDateStr();
+		List<DodatnaUsluga> listaUsluga = this.getDodatnaUslugaList();
+		List<String> listaStringova = new ArrayList<String>();
+		for(int i = 0; i < listaUsluga.size(); i++) {
+			listaStringova.add(listaUsluga.get(i).getNaziv());
+		}
+		System.out.println(listaStringova);
+		String result = String.join(":", listaStringova);
+		return this.getStatus().name() + ";" + this.getUsernameGosta() + ";" + this.getTipSobe().getNaziv() + ";" + result + ";" + this.getCheckInDateStr() + ";" + this.getCheckOutDateStr();
 	}
 }
