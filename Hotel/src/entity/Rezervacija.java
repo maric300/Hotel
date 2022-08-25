@@ -10,6 +10,7 @@ public class Rezervacija {
 		ODBIJENA,
 		OTKAZANA,
 	};
+	private int id;
 	private Status status;
 	private TipSobe tipSobe;
 	private List<DodatnaUsluga> dodatnaUslugaList;
@@ -17,13 +18,22 @@ public class Rezervacija {
 	private String checkOutDateStr;
 	private String usernameGosta;
 	
-	public Rezervacija(Status status,String usernameGosta, TipSobe tipSobe, List<DodatnaUsluga> dodatnaUslugaList, String checkInDateStr, String checkOutDateStr) {
+	public Rezervacija(int id, Status status,String usernameGosta, TipSobe tipSobe, List<DodatnaUsluga> dodatnaUslugaList, String checkInDateStr, String checkOutDateStr) {
+		this.id = id;
 		this.status = status;
 		this.usernameGosta = usernameGosta;
 		this.tipSobe = tipSobe;
 		this.dodatnaUslugaList = dodatnaUslugaList;
 		this.checkInDateStr = checkInDateStr;
 		this.checkOutDateStr = checkOutDateStr;
+	}
+
+	public int getId() {
+		return id;
+	}
+
+	public void setId(int id) {
+		this.id = id;
 	}
 
 	public Status getStatus() {
@@ -82,6 +92,6 @@ public class Rezervacija {
 		}
 		System.out.println(listaStringova);
 		String result = String.join(":", listaStringova);
-		return this.getStatus().name() + ";" + this.getUsernameGosta() + ";" + this.getTipSobe().getNaziv() + ";" + result + ";" + this.getCheckInDateStr() + ";" + this.getCheckOutDateStr();
+		return this.getId() + ";" + this.getStatus().name() + ";" + this.getUsernameGosta() + ";" + this.getTipSobe().getNaziv() + ";" + result + ";" + this.getCheckInDateStr() + ";" + this.getCheckOutDateStr();
 	}
 }

@@ -54,12 +54,12 @@ public class RezervacijaManager {
 			String linija = null;
 			while ((linija = br.readLine()) != null) {
 				String[] tokeni = linija.split(";");
-				String[] tokeniUsluge = tokeni[3].split(":");
+				String[] tokeniUsluge = tokeni[4].split(":");
 				List<String> tokeniUslugeList = new ArrayList<String>();
 				for (String usluga : tokeniUsluge) {
 					tokeniUslugeList.add(usluga);
 				}
-				this.rezervacije.add(new Rezervacija(Status.valueOf(tokeni[0]), tokeni[1] ,tipSobeMng.NameToObject(tokeni[2]), dodatnaUslugaMng.ListToObject(tokeniUslugeList), tokeni[4], tokeni[5]));
+				this.rezervacije.add(new Rezervacija(Integer.parseInt(tokeni[0]), Status.valueOf(tokeni[1]), tokeni[2] ,tipSobeMng.NameToObject(tokeni[3]), dodatnaUslugaMng.ListToObject(tokeniUslugeList), tokeni[4], tokeni[6]));
 			}
 			br.close();
 		} catch (IOException e) {
