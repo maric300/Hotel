@@ -3,21 +3,23 @@ package model;
 import javax.swing.table.AbstractTableModel;
 
 import entity.Gost;
+import entity.Rezervacija;
 import entity.Soba;
+import manage.RezervacijaManager;
 import manage.SobaManager;
 
-public class SobaModel extends AbstractTableModel {
+public class RezervacijaModel extends AbstractTableModel {
 	private static final long serialVersionUID = 173122351138550735L;
-	private SobaManager sobaMng;
+	private RezervacijaManager rezervacijaMng;
 	private String[] columnNames = { "ID", "Status", "Tip sobe"};
 
-	public SobaModel(SobaManager mng) {
-		this.sobaMng = mng;
+	public RezervacijaModel(RezervacijaManager mng) {
+		this.rezervacijaMng = mng;
 	}
 
 	@Override
 	public int getRowCount() {
-		return sobaMng.getSobe().size();
+		return rezervacijaMng.getRezervacije().size();
 	}
 
 	@Override
@@ -27,16 +29,24 @@ public class SobaModel extends AbstractTableModel {
 
 	@Override
 	public Object getValueAt(int rowIndex, int columnIndex) {
-		if (sobaMng.getSobe().size() != 0) {
-			Soba s = sobaMng.getSobe().get(rowIndex);
+		if (rezervacijaMng.getRezervacije().size() != 0) {
+			Rezervacija g = rezervacijaMng.getRezervacije().get(rowIndex);
 
 			switch (columnIndex) {
 			case 0:
-				return s.getId();
+				return g.getId();
 			case 1:
-				return s.getStatus();
+				return g.getStatus();
 			case 2:
-				return s.getTipSobe().getNaziv();
+				return g.getUsernameGosta();
+			case 3:
+				return g.getTipSobe();
+			case 4:
+				return g.getDodatnaUslugaList();
+			case 5:
+				return g.getCheckInDateStr();
+			case 6:
+				return g.getCheckOutDateStr();
 			default:
 				return null;
 			}

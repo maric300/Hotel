@@ -4,14 +4,27 @@ import java.util.List;
 
 public class Soba {
 	private int id;
+	public enum StatusSobe {
+		SLOBODNA,
+		SPREMANJE,
+		ZAUZETO
+	}
+	private StatusSobe status;
 	private TipSobe tipSobe;
-	private List<Integer> idRezervacija;
 
-	public Soba(int id, TipSobe tipSobe, List<Integer> idRezervacija) {
+	public Soba(int id, StatusSobe status, TipSobe tipSobe) {
 		this.id = id;
+		this.status = status;
 		this.tipSobe = tipSobe;
-		this.idRezervacija = idRezervacija;
 		
+	}
+
+	public StatusSobe getStatus() {
+		return status;
+	}
+
+	public void setStatus(StatusSobe status) {
+		this.status = status;
 	}
 
 	public int getId() {
@@ -30,12 +43,8 @@ public class Soba {
 		this.tipSobe = tipSobe;
 	}
 
-	public List<Integer> getIdRezervacija() {
-		return idRezervacija;
-	}
-
-	public void setIdRezervacija(List<Integer> idRezervacija) {
-		this.idRezervacija = idRezervacija;
+	public String toFileString() {
+		return String.valueOf(this.getId()) + ";" + this.getStatus().name() + ";" + this.getTipSobe().getNaziv();
 	}
 	
 }

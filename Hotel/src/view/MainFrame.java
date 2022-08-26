@@ -129,7 +129,7 @@ public class MainFrame extends JFrame {
 							if (zaposlen.getPosao().equals(Posao.valueOf("RECEPCIONER"))) {
 								dialog.setVisible(false);
 								dialog.dispose();
-								RecepcionerFrame rf = new RecepcionerFrame(managers);
+								RecepcionerFrame rf = new RecepcionerFrame(managers, zaposlen);
 								rf.setVisible(true);
 							}
 						}

@@ -9,6 +9,7 @@ public class ManagerFactory {
 	private ZaposlenManager zaposlenMng;
 	private TipSobeManager tipSobeMng;
 	private RezervacijaManager rezervacijaMng;
+	private SobaManager sobaMng;
 	
 	public ManagerFactory(AppSettings appSettings) {
 		this.appSettings = appSettings;
@@ -17,6 +18,7 @@ public class ManagerFactory {
 		this.zaposlenMng = new ZaposlenManager(this.appSettings.getZaposlenFilename());
 		this.tipSobeMng = new TipSobeManager(this.appSettings.getTipSobeFilename());
 		this.rezervacijaMng = new RezervacijaManager(this.appSettings.getRezervacijaFilename(), tipSobeMng, uslugaMng);
+		this.sobaMng = new SobaManager(this.appSettings.getSobaFilename(), tipSobeMng);
 	}
 	
 	public GostManager getGostMng() {
@@ -40,12 +42,17 @@ public class ManagerFactory {
 		return rezervacijaMng;
 	}
 	
+	public SobaManager getSobaMng() {
+		return sobaMng;
+	}
+	
 	public void loadData() {
 		this.gostMng.loadData();
 		this.uslugaMng.loadData();
 		this.zaposlenMng.loadData();
 		this.tipSobeMng.loadData();
 		this.rezervacijaMng.loadData();
+		this.sobaMng.loadData();
 	}
 	
 	public void saveData() {
@@ -53,5 +60,6 @@ public class ManagerFactory {
 		this.zaposlenMng.saveData();
 		this.tipSobeMng.saveData();
 		this.rezervacijaMng.saveData();
+		this.sobaMng.saveData();
 	}
 }

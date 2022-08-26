@@ -6,15 +6,17 @@ public class AppSettings {
 	private String zaposlenFilename;
 	private String tipSobeFilename;
 	private String rezervacijaFilename;
+	private String sobaFilename;
 	
 	
-	public AppSettings(String gostFilename, String zaposlenFilename, String dodatneUslugeFilename, String tipSobeFilename, String rezervacijaFilename) {
+	public AppSettings(String gostFilename, String zaposlenFilename, String dodatneUslugeFilename, String tipSobeFilename, String rezervacijaFilename, String sobaFilename) {
 		super();
 		this.gostFilename = gostFilename;
 		this.zaposlenFilename = zaposlenFilename;
 		this.dodatneUslugeFilename = dodatneUslugeFilename;
 		this.tipSobeFilename = tipSobeFilename;
 		this.rezervacijaFilename = rezervacijaFilename;
+		this.sobaFilename = sobaFilename;
 	}
 
 
@@ -37,6 +39,10 @@ public class AppSettings {
 
 	public String getRezervacijaFilename() {
 		return rezervacijaFilename;
+	}
+	
+	public String getSobaFilename() {
+		return sobaFilename;
 	}
 
 
