@@ -90,8 +90,10 @@ public class Rezervacija {
 		for(int i = 0; i < listaUsluga.size(); i++) {
 			listaStringova.add(listaUsluga.get(i).getNaziv());
 		}
-		System.out.println(listaStringova);
+//		System.out.println(listaStringova);
 		String result = String.join(":", listaStringova);
+		System.out.println("rezervacija.java 95 - " + result);
+		System.out.println(this.getCheckInDateStr());
 		return this.getId() + ";" + this.getStatus().name() + ";" + this.getUsernameGosta() + ";" + this.getTipSobe().getNaziv() + ";" + result + ";" + this.getCheckInDateStr() + ";" + this.getCheckOutDateStr();
 	}
 }

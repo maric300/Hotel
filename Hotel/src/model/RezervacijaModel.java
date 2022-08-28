@@ -1,5 +1,8 @@
 package model;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import javax.swing.table.AbstractTableModel;
 
 import entity.Gost;
@@ -11,7 +14,7 @@ import manage.SobaManager;
 public class RezervacijaModel extends AbstractTableModel {
 	private static final long serialVersionUID = 173122351138550735L;
 	private RezervacijaManager rezervacijaMng;
-	private String[] columnNames = { "ID", "Status", "Tip sobe"};
+	private String[] columnNames = { "ID", "Status", "Gost", "Tip sobe", "Dodatne usluge", "Check-in", "Check-out"};
 
 	public RezervacijaModel(RezervacijaManager mng) {
 		this.rezervacijaMng = mng;
@@ -40,9 +43,14 @@ public class RezervacijaModel extends AbstractTableModel {
 			case 2:
 				return g.getUsernameGosta();
 			case 3:
-				return g.getTipSobe();
+				return g.getTipSobe().getNaziv();
 			case 4:
-				return g.getDodatnaUslugaList();
+				List<String> listaStringova = new ArrayList<String>();
+				for(int i = 0; i < g.getDodatnaUslugaList().size(); i++) {
+					listaStringova.add(g.getDodatnaUslugaList().get(i).getNaziv());
+				}
+				String result = String.join(",", listaStringova);
+				return result;
 			case 5:
 				return g.getCheckInDateStr();
 			case 6:

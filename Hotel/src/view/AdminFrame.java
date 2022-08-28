@@ -7,6 +7,7 @@ import javax.swing.border.EmptyBorder;
 
 import manage.ManagerFactory;
 import model.GostModel;
+import viewTable.TabelaRezervacija;
 import viewTable.TabelaSoba;
 import viewTable.TabelaZaposlenih;
 
@@ -105,6 +106,16 @@ public class AdminFrame extends JFrame {
 		
 		JMenuItem mntmPrikaziSobe = new JMenuItem("Prikaži sobe");
 		mnPrikazi.add(mntmPrikaziSobe);
+		
+		JMenuItem mntmRezervacije = new JMenuItem("Prikaži rezervacije");
+		mnPrikazi.add(mntmRezervacije);
+		
+		mntmRezervacije.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				TabelaRezervacija tr = new TabelaRezervacija(factoryMng);
+				tr.setVisible(true);
+			}
+		});
 		
 		mntmPrikaziSobe.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {

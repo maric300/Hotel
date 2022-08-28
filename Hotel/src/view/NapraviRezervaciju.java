@@ -3,8 +3,11 @@ package view;
 import java.awt.BorderLayout;
 import java.awt.Choice;
 import java.awt.EventQueue;
+import java.time.LocalDate;
 import java.time.Year;
+import java.time.format.DateTimeFormatter;
 import java.util.List;
+import java.util.concurrent.ThreadLocalRandom;
 
 import javax.swing.JButton;
 import javax.swing.JComboBox;
@@ -23,6 +26,7 @@ import entity.Rezervacija.Status;
 import manage.ManagerFactory;
 import net.miginfocom.swing.MigLayout;
 import java.awt.event.ActionListener;
+import java.text.SimpleDateFormat;
 import java.awt.event.ActionEvent;
 
 public class NapraviRezervaciju extends JFrame {
@@ -55,7 +59,7 @@ public class NapraviRezervaciju extends JFrame {
 		contentPane = new JPanel();
 		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
 		setContentPane(contentPane);
-		contentPane.setLayout(new MigLayout("wrap, fill", "[][][][]", "[][][][][]"));
+		contentPane.setLayout(new MigLayout("wrap, fill", "[][][][]", "[][][][][][]"));
 		JLabel lbTipSobe = new JLabel("Tip sobe");
 		contentPane.add(lbTipSobe, "cell 0 0");
 		
@@ -91,11 +95,31 @@ public class NapraviRezervaciju extends JFrame {
 		Choice choiceYear = new Choice();
 		contentPane.add(choiceYear);
 		
-		for(int i = 1;i < 32;i++) {
+		choiceDay.add("01");
+		choiceDay.add("02");
+		choiceDay.add("03");
+		choiceDay.add("04");
+		choiceDay.add("05");
+		choiceDay.add("06");
+		choiceDay.add("07");
+		choiceDay.add("08");
+		choiceDay.add("09");
+		
+		for(int i = 10;i < 32;i++) {
 			choiceDay.add(String.valueOf(i));
 		}
 		
-		for(int i = 1;i < 13;i++) {
+		choiceMonth.add("01");
+		choiceMonth.add("02");
+		choiceMonth.add("03");
+		choiceMonth.add("04");
+		choiceMonth.add("05");
+		choiceMonth.add("06");
+		choiceMonth.add("07");
+		choiceMonth.add("08");
+		choiceMonth.add("09");
+		
+		for(int i = 10;i < 13;i++) {
 			choiceMonth.add(String.valueOf(i));
 		}
 
@@ -115,17 +139,40 @@ public class NapraviRezervaciju extends JFrame {
 		Choice choiceYear1 = new Choice();
 		contentPane.add(choiceYear1);
 		
-		for(int i = 1;i < 32;i++) {
+		choiceDay1.add("01");
+		choiceDay1.add("02");
+		choiceDay1.add("03");
+		choiceDay1.add("04");
+		choiceDay1.add("05");
+		choiceDay1.add("06");
+		choiceDay1.add("07");
+		choiceDay1.add("08");
+		choiceDay1.add("09");
+		
+		for(int i = 10;i < 32;i++) {
 			choiceDay1.add(String.valueOf(i));
 		}
 		
-		for(int i = 1;i < 13;i++) {
+		choiceMonth1.add("01");
+		choiceMonth1.add("02");
+		choiceMonth1.add("03");
+		choiceMonth1.add("04");
+		choiceMonth1.add("05");
+		choiceMonth1.add("06");
+		choiceMonth1.add("07");
+		choiceMonth1.add("08");
+		choiceMonth1.add("09");
+		
+		for(int i = 10;i < 13;i++) {
 			choiceMonth1.add(String.valueOf(i));
 		}
 
 		for(int i = Year.now().getValue();i < Year.now().getValue() + 2;i++) {
 			choiceYear1.add(String.valueOf(i));
 		}
+		
+		JLabel lbError = new JLabel(" ");
+		contentPane.add(lbError, "span 4");
 		JButton btnRezervisi = new JButton("Rezerviši");
 		contentPane.add(btnRezervisi, "span 2, gaptop 20px, alignx center");
 		btnRezervisi.addActionListener(new ActionListener() {
@@ -138,9 +185,64 @@ public class NapraviRezervaciju extends JFrame {
 				List<DodatnaUsluga> dodatnaUslugaList = factoryMng.getUslugaMng().ListToObject(dodatnaUslugaStrList);
 				String checkInDateStr = choiceDay.getSelectedItem() + "." + choiceMonth.getSelectedItem() + "." + choiceYear.getSelectedItem() + ".";
 				String checkOutdateStr = choiceDay1.getSelectedItem() + "." + choiceMonth1.getSelectedItem() + "." + choiceYear1.getSelectedItem() + ".";
+				List<Rezervacija> rezervacije = factoryMng.getRezervacijaMng().getRezervacije();
+				int id;
+				Boolean isOk = true;
+				while (true) {
+					Boolean isValid = true;
+					id = ThreadLocalRandom.current().nextInt(0, 9999);
+					for (Rezervacija r : rezervacije) {
+						if (r.getId() == id) {
+							isValid = false;
+						}
+					}
+					if (isValid == true) {
+						break;
+					}
+				}
 				
-				factoryMng.getRezervacijaMng().getRezervacije().add(new Rezervacija(status, ulogovaniGost.getEmail(), tipSobe, dodatnaUslugaList, checkInDateStr, checkOutdateStr));
-				dispose();
+				try {
+				    SimpleDateFormat df = new java.text.SimpleDateFormat("dd.MM.yyyy.");
+				    df.setLenient(false);
+				    df.parse(checkInDateStr);
+				} catch (java.text.ParseException e1) {
+				  lbError.setText("Neispravan check-in datum");
+				  isOk = false;
+				}
+				
+				try {
+				    SimpleDateFormat df = new java.text.SimpleDateFormat("dd.MM.yyyy.");
+				    df.setLenient(false);
+				    df.parse(checkOutdateStr);
+				} catch (java.text.ParseException e1) {
+				  lbError.setText("Neispravan check-out datum");
+				  isOk = false;
+				}
+				
+				if (isOk == true) {
+					LocalDate ldIn = LocalDate.parse(checkInDateStr, DateTimeFormatter.ofPattern("dd.MM.uuuu."));
+					LocalDate ldOut = LocalDate.parse(checkOutdateStr, DateTimeFormatter.ofPattern("dd.MM.uuuu."));
+					if (ldIn.isAfter(ldOut)) {
+						lbError.setText("check-out datum mora biti nakon check-in datuma!");
+						isOk = false;
+					}
+					
+					if (LocalDate.now().isAfter(ldIn)) {
+						lbError.setText("check-in datum mora biti nakon danasnjeg datuma!");
+						isOk = false;
+					}
+				}
+				
+				
+				if (isOk == true) {
+					if (ulogovaniGost == null) {
+						factoryMng.getRezervacijaMng().getRezervacije().add(new Rezervacija(id, status, "admin", tipSobe, dodatnaUslugaList, checkInDateStr, checkOutdateStr));
+					}
+					else {
+						factoryMng.getRezervacijaMng().getRezervacije().add(new Rezervacija(id, status, ulogovaniGost.getEmail(), tipSobe, dodatnaUslugaList, checkInDateStr, checkOutdateStr));
+					}
+					dispose();
+				}
 			}
 		});
 		

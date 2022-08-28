@@ -14,6 +14,7 @@ import entity.Gost;
 import entity.Osoba;
 import entity.Rezervacija;
 import entity.Rezervacija.Status;
+import entity.Soba;
 import entity.Zaposlen;
 import entity.Zaposlen.Posao;
 import entity.Zaposlen.Posao.*; 
@@ -59,7 +60,7 @@ public class RezervacijaManager {
 				for (String usluga : tokeniUsluge) {
 					tokeniUslugeList.add(usluga);
 				}
-				this.rezervacije.add(new Rezervacija(Integer.parseInt(tokeni[0]), Status.valueOf(tokeni[1]), tokeni[2] ,tipSobeMng.NameToObject(tokeni[3]), dodatnaUslugaMng.ListToObject(tokeniUslugeList), tokeni[4], tokeni[6]));
+				this.rezervacije.add(new Rezervacija(Integer.parseInt(tokeni[0]), Status.valueOf(tokeni[1]), tokeni[2] ,tipSobeMng.NameToObject(tokeni[3]), dodatnaUslugaMng.ListToObject(tokeniUslugeList), tokeni[5], tokeni[6]));
 			}
 			br.close();
 		} catch (IOException e) {
@@ -80,6 +81,25 @@ public class RezervacijaManager {
 			return false;
 		}
 		return true;
+	}
+
+
+
+	public Rezervacija IdToObject(int id) {
+		for (Rezervacija rezervacija : rezervacije) {
+			if (rezervacija.getId() == id) {
+				return rezervacija;
+			}
+		}
+		return null;
+	}
+
+
+
+	public void remove(int id) {
+		Rezervacija r = this.IdToObject(id);
+		rezervacije.remove(r);
+		
 	}
 	
 	

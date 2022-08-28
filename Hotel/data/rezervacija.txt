@@ -1,2 +1,2 @@
-1;NA_CEKANJU;maric300;jednokrevetna;dorucak:bilijar:kuhinja;dorucak:bilijar:kuhinja;7.4.2022.
-2;NA_CEKANJU;maric300;dvokrevetna;dorucak:rucak:vecera;dorucak:rucak:vecera;8.4.2022.
+3216;NA_CEKANJU;maric300;jednokrevetna;dorucak;02.10.2022.;06.10.2022.
+9827;NA_CEKANJU;admin;jednokrevetna;dorucak:rucak:vecera;04.11.2022.;08.11.2022.
