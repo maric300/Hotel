@@ -20,11 +20,12 @@ import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 import java.awt.event.ActionEvent;
 import net.miginfocom.swing.MigLayout;
+import viewTable.TabelaRezervacijaRecepcioner;
 
 public class RecepcionerFrame extends JFrame {
 
 	private JPanel contentPane;
-	protected JTable table;
+	protected JButton rezervacijeBtn = new JButton("Rezervacije");
 
 	/**
 	 * Launch the application.
@@ -74,9 +75,15 @@ public class RecepcionerFrame extends JFrame {
 		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
 		setContentPane(contentPane);
 		contentPane.setLayout(new MigLayout("fill", "[]", "[][]"));
-		SobaModel mdl = new SobaModel(factoryMng.getSobaMng());
-		table = new JTable(mdl);
-		contentPane.add(table);
+		contentPane.add(rezervacijeBtn);
+		
+		rezervacijeBtn.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				TabelaRezervacijaRecepcioner trr = new TabelaRezervacijaRecepcioner(factoryMng);
+				trr.setVisible(true);
+			}
+		});
+		
 		
 		
 		pack();
