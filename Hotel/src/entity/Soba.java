@@ -1,7 +1,5 @@
 package entity;
 
-import java.util.List;
-
 public class Soba {
 	private int id;
 	public enum StatusSobe {

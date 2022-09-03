@@ -55,6 +55,7 @@ public class RecepcionerFrame extends JFrame {
 		});
 		setTitle("Hotel (Recepcioner)");
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		setLocationRelativeTo(null);
 //		setBounds(100, 100, 450, 300);
 		
 		JMenuBar menuBar = new JMenuBar();
@@ -74,7 +75,7 @@ public class RecepcionerFrame extends JFrame {
 		contentPane = new JPanel();
 		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
 		setContentPane(contentPane);
-		contentPane.setLayout(new MigLayout("fill", "[]", "[][]"));
+		contentPane.setLayout(new MigLayout("fill", "[][][]", "[][][]"));
 		contentPane.add(rezervacijeBtn);
 		
 		rezervacijeBtn.addActionListener(new ActionListener() {

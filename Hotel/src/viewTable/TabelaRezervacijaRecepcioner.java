@@ -45,11 +45,17 @@ import manage.ManagerFactory;
 import model.GostModel;
 import model.RezervacijaModel;
 import model.RezervacijaModel;
+import view.CheckInWindow;
 import view.NapraviRezervaciju;
 import view.NapraviSobu;
 import view.RegistracijaZaposlenog;
 
 public class TabelaRezervacijaRecepcioner extends JFrame {
+
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
 
 	private JPanel contentPane;
 	
@@ -59,6 +65,9 @@ public class TabelaRezervacijaRecepcioner extends JFrame {
 	protected JButton btnPotvrdi = new JButton("Potvrdi");
 	protected JButton btnOdbij = new JButton("Odbij");
 //	protected JButton btnDelete = new JButton();
+	protected JButton btnCheckIn = new JButton("CheckIn");
+	protected JButton btnCheckOut = new JButton("CheckOut");
+
 	protected JTextField tfSearch = new JTextField(20);
 	protected TableRowSorter<AbstractTableModel> tableSorter = new TableRowSorter<AbstractTableModel>();
 	protected JTable table;
@@ -84,6 +93,8 @@ public class TabelaRezervacijaRecepcioner extends JFrame {
 		btnOdbij.setIcon(editIcon);
 		mainToolbar.add(btnOdbij);
 		ImageIcon deleteIcon = new ImageIcon("img/remove.gif");
+		mainToolbar.add(btnCheckIn);
+		mainToolbar.add(btnCheckOut);
 //		btnDelete.setIcon(deleteIcon);
 //		mainToolbar.add(btnDelete);
 		mainToolbar.setFloatable(false);		
@@ -185,15 +196,16 @@ public class TabelaRezervacijaRecepcioner extends JFrame {
 											s.setStatus(Status.POTVRDJENA);
 											refreshData();
 											System.out.println("1");
+											break;
 										}
 										else if (PotvrdjenldIn.isAfter(NaCekanjuldIn) && PotvrdjenldIn.isAfter(NaCekanjuldOut)) {
 											s.setStatus(Status.POTVRDJENA);
 											refreshData();
 											System.out.println("2");
+											break;
 										}
 										else {
 											JOptionPane.showMessageDialog(null, "Ne postoji slobodna soba u tom opsegu datuma!", "Greska", JOptionPane.ERROR_MESSAGE);
-
 										}
 									}									
 								}
@@ -204,7 +216,7 @@ public class TabelaRezervacijaRecepcioner extends JFrame {
 								}
 							}
 							else {
-								JOptionPane.showMessageDialog(null, "Ne postoji slobodna soba sa takvim tipom!", "Greska", JOptionPane.ERROR_MESSAGE);
+								JOptionPane.showMessageDialog(null, "Soba odabranog tipa nije u funkciji!", "Greska", JOptionPane.ERROR_MESSAGE);
 							}
 						
 						}
@@ -229,15 +241,11 @@ public class TabelaRezervacijaRecepcioner extends JFrame {
 					int id = (int) table.getValueAt(red, 0);
 					Rezervacija s = factoryMng.getRezervacijaMng().IdToObject(id);
 					if (s.getStatus().equals(Status.NA_CEKANJU)) {
-						if(s != null) {
-							int izbor = JOptionPane.showConfirmDialog(null,"Da li ste sigurni da zelite da odbijete rezervaciju?", 
-									"Rezervacija id " + String.valueOf(s.getId()) + " - Potvrda odbijanja", JOptionPane.YES_NO_OPTION);
-							if(izbor == JOptionPane.YES_OPTION) {
-								s.setStatus(Status.ODBIJENA);
-								refreshData();
-							}
-						}else {
-							JOptionPane.showMessageDialog(null, "Nije moguce pronaci odabranu rezervaciju!", "Greska", JOptionPane.ERROR_MESSAGE);
+						int izbor = JOptionPane.showConfirmDialog(null,"Da li ste sigurni da zelite da odbijete rezervaciju?", 
+								"Rezervacija id " + String.valueOf(s.getId()) + " - Potvrda odbijanja", JOptionPane.YES_NO_OPTION);
+						if(izbor == JOptionPane.YES_OPTION) {
+							s.setStatus(Status.ODBIJENA);
+							refreshData();
 						}
 					}
 					else {
@@ -248,6 +256,38 @@ public class TabelaRezervacijaRecepcioner extends JFrame {
 				}
 			}
 		});
+		
+		btnCheckIn.addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				int red = table.getSelectedRow();
+				if(red == -1) {
+					JOptionPane.showMessageDialog(null, "Morate odabrati red u tabeli.", "Greska", JOptionPane.WARNING_MESSAGE);
+				}
+				else {
+					int id = (int) table.getValueAt(red, 0);
+					Rezervacija s = factoryMng.getRezervacijaMng().IdToObject(id);
+					LocalDate ldIn = LocalDate.parse(s.getCheckInDateStr(), DateTimeFormatter.ofPattern("dd.MM.uuuu."));
+					if(ldIn.equals(LocalDate.now())) {
+						if (s.getStatus().equals(Status.POTVRDJENA)) {
+							CheckInWindow ciw = new CheckInWindow(factoryMng, s);
+							ciw.setVisible(true);
+						}
+						else {
+							JOptionPane.showMessageDialog(null, "Rezervacija nije potvrđena", "Greska", JOptionPane.WARNING_MESSAGE);
+
+						}
+					}
+					else {
+						JOptionPane.showMessageDialog(null, "Gost može da se check-inuje samo na dan rezervacije", "Greska", JOptionPane.WARNING_MESSAGE);
+
+					}
+
+					
+				}
+			}
+		});
+		
 	}
 
 	

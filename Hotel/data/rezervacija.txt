@@ -1,6 +1,6 @@
-3216;POTVRDJENA;maric300;jednokrevetna;dorucak;02.10.2022.;06.10.2022.
+3216;NA_CEKANJU;maric300;jednokrevetna;dorucak;02.10.2022.;06.10.2022.
 9827;ODBIJENA;admin;jednokrevetna;dorucak:rucak:vecera;04.11.2022.;08.11.2022.
 6674;POTVRDJENA;maric300;dvokrevetna;dorucak;03.10.2022.;11.10.2022.
 1723;NA_CEKANJU;maric300;dvokrevetna;rucak;05.10.2022.;08.10.2022.
 4916;NA_CEKANJU;maric300;dvokrevetna;vecera;01.10.2022.;05.10.2022.
-1321;NA_CEKANJU;maric300;dvokrevetna;bilijar;13.10.2022.;17.10.2022.
+1321;POTVRDJENA;maric300;dvokrevetna;bilijar;03.09.2022.;07.09.2022.
