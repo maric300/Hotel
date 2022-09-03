@@ -48,7 +48,7 @@ import manage.GostManager;
 import manage.ManagerFactory;
 import model.GostModel;
 import model.RezervacijaModel;
-import model.SobaModel;
+import model.SobaricaModel;
 import model.SobaricaModel;
 import model.RezervacijaModel;
 import view.CheckInWindow;
@@ -192,7 +192,7 @@ public class SobaricaFrame extends JFrame {
 
 	// potrebno osvezavanje podataka u tabeli bez gasenja prozora
 	public void refreshData() {
-		SobaModel sm = (SobaModel)this.table.getModel();
+		SobaricaModel sm = (SobaricaModel)this.table.getModel();
 		sm.fireTableDataChanged();
 	}
 	

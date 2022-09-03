@@ -1,3 +1,4 @@
 1;SLOBODNA;jednokrevetna;
 2;SLOBODNA;dvokrevetna;milica123
 3;SLOBODNA;jednokrevetna;
+4;SLOBODNA;jednokrevetna;milica123
