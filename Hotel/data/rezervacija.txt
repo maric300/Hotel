@@ -3,4 +3,4 @@
 6674;POTVRDJENA;maric300;dvokrevetna;dorucak;03.10.2022.;11.10.2022.;-1
 1723;NA_CEKANJU;maric300;dvokrevetna;rucak;05.10.2022.;08.10.2022.;-1
 4916;NA_CEKANJU;maric300;dvokrevetna;vecera;01.10.2022.;05.10.2022.;-1
-1321;POTVRDJENA;maric300;dvokrevetna;bilijar:dorucak:vecera;03.09.2022.;07.09.2022.;2
+1321;POTVRDJENA;maric300;dvokrevetna;bilijar:dorucak:vecera;01.09.2022.;03.09.2022.;2

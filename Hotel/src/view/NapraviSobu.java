@@ -90,7 +90,7 @@ public class NapraviSobu extends JFrame {
 				}
 				else {
 					if(sobaZaEdit == null) {
-						factoryMng.getSobaMng().getSobe().add(new Soba(id, StatusSobe.SLOBODNA, tipSobe));
+						factoryMng.getSobaMng().getSobe().add(new Soba(id, StatusSobe.SLOBODNA, tipSobe, ""));
 					}
 					else {
 						factoryMng.getSobaMng().edit(sobaZaEdit.getId(), id, StatusSobe.SLOBODNA, tipSobe);

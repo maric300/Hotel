@@ -10,18 +10,20 @@ import entity.Soba;
 import entity.Soba.StatusSobe;
 import manage.SobaManager;
 
-public class SobaModel extends AbstractTableModel {
+public class SobaricaModel extends AbstractTableModel {
 	private static final long serialVersionUID = 173122351138550735L;
 	private SobaManager sobaMng;
 	private String[] columnNames = { "ID", "Status", "Tip sobe", "Sobarica"};
+	private String emailSobarice;
 
-	public SobaModel(SobaManager mng) {
+	public SobaricaModel(SobaManager mng, String emailSobarice) {
 		this.sobaMng = mng;
+		this.emailSobarice = emailSobarice;
 	}
 
 	@Override
 	public int getRowCount() {
-		return sobaMng.getSobe().size();
+		return sobaMng.VratiSobeZaSpremanje(emailSobarice).size();
 	}
 
 	@Override
@@ -32,8 +34,9 @@ public class SobaModel extends AbstractTableModel {
 	@Override
 	public Object getValueAt(int rowIndex, int columnIndex) {
 		
-		if (sobaMng.getSobe().size() != 0) {
-			Soba s = sobaMng.getSobe().get(rowIndex);
+		List<Soba> SobeSpremanje = sobaMng.VratiSobeZaSpremanje(emailSobarice);
+		if (SobeSpremanje.size() != 0) {
+			Soba s = SobeSpremanje.get(rowIndex);
 
 			switch (columnIndex) {
 			case 0:

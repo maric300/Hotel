@@ -49,6 +49,16 @@ public class SobaManager {
 		return null;
 	}
 	
+	public List<Soba> VratiSobeZaSpremanje(String email) {
+		List<Soba> SobeSpremanje = new ArrayList<Soba>();
+		for (Soba s : this.getSobe()) {
+			if (s.getStatus().equals(StatusSobe.SPREMANJE) && s.getEmailSobarice().equals(email)) {
+				SobeSpremanje.add(s);
+			}
+		}
+		return SobeSpremanje;
+	}
+	
 	public void edit(int oldId, int id, StatusSobe status, TipSobe tipSobe) {
 		
 		if (id == oldId) {
@@ -81,7 +91,14 @@ public class SobaManager {
 			while ((linija = br.readLine()) != null) {
 				System.out.println(linija);
 				String[] tokeni = linija.split(";");
-				this.sobe.add(new Soba(Integer.parseInt(tokeni[0]), StatusSobe.valueOf(tokeni[1]), tipSobeMng.NameToObject(tokeni[2])));
+				String sobaricaStr;
+				if (tokeni.length == 3) {
+					sobaricaStr = "";
+				}
+				else {
+					sobaricaStr = tokeni[3];
+				}
+				this.sobe.add(new Soba(Integer.parseInt(tokeni[0]), StatusSobe.valueOf(tokeni[1]), tipSobeMng.NameToObject(tokeni[2]), sobaricaStr));
 			}
 			br.close();
 		} catch (IOException e) {

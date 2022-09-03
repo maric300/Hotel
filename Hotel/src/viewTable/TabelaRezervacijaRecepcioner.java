@@ -11,6 +11,7 @@ import java.awt.event.MouseEvent;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.Comparator;
 import java.util.HashMap;
 import java.util.List;
@@ -41,6 +42,7 @@ import entity.TipSobe;
 import entity.Zaposlen;
 import entity.Rezervacija.Status;
 import entity.Soba.StatusSobe;
+import entity.Zaposlen.Posao;
 import manage.GostManager;
 import manage.ManagerFactory;
 import model.GostModel;
@@ -301,8 +303,31 @@ public class TabelaRezervacijaRecepcioner extends JFrame {
 					Rezervacija s = factoryMng.getRezervacijaMng().IdToObject(id);
 					LocalDate ldOut = LocalDate.parse(s.getCheckOutDateStr(), DateTimeFormatter.ofPattern("dd.MM.uuuu."));
 					if(ldOut.equals(LocalDate.now())) {
+						HashMap<String, Integer> hmSobarice = new HashMap<String, Integer>();
+						for (Zaposlen z : factoryMng.getZaposlenManager().getZaposleni()) {
+							if (z.getPosao().equals(Posao.SOBARICA)) {
+								hmSobarice.put(z.getEmail(), 0);
+							}
+						}
+
+						for (Soba soba : factoryMng.getSobaMng().getSobe()) {
+							if (soba.getStatus().equals(StatusSobe.SPREMANJE)) {
+								System.out.println(soba.getId());
+								hmSobarice.replace(soba.getEmailSobarice(), hmSobarice.get(soba.getEmailSobarice()) + 1);
+							}
+						}
+						Integer min = -1;
+						String minSobarica = null;
+						for (String key : hmSobarice.keySet()) {
+							if (hmSobarice.get(key) < min || min == -1) {
+								min = hmSobarice.get(key);
+								minSobarica = key;
+							}
+						}
+						factoryMng.getSobaMng().IdToObject(s.getIdSobe()).setEmailSobarice(minSobarica);
 						factoryMng.getSobaMng().IdToObject(s.getIdSobe()).setStatus(StatusSobe.SPREMANJE);
-						s.setIdSobe(-1);
+
+
 					}
 					else {
 						JOptionPane.showMessageDialog(null, "Gost može da se check-outuje samo na poslednji dan rezervacije", "Greska", JOptionPane.WARNING_MESSAGE);

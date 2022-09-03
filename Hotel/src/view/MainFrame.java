@@ -132,6 +132,12 @@ public class MainFrame extends JFrame {
 								RecepcionerFrame rf = new RecepcionerFrame(managers, zaposlen);
 								rf.setVisible(true);
 							}
+							else if (zaposlen.getPosao().equals(Posao.valueOf("SOBARICA"))) {
+								dialog.setVisible(false);
+								dialog.dispose();
+								SobaricaFrame sf = new SobaricaFrame(managers, zaposlen);
+								sf.setVisible(true);
+							}
 						}
 					}
 					
