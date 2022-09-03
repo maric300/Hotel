@@ -60,7 +60,7 @@ public class RezervacijaManager {
 				for (String usluga : tokeniUsluge) {
 					tokeniUslugeList.add(usluga);
 				}
-				this.rezervacije.add(new Rezervacija(Integer.parseInt(tokeni[0]), Status.valueOf(tokeni[1]), tokeni[2] ,tipSobeMng.NameToObject(tokeni[3]), dodatnaUslugaMng.ListToObject(tokeniUslugeList), tokeni[5], tokeni[6]));
+				this.rezervacije.add(new Rezervacija(Integer.parseInt(tokeni[0]), Status.valueOf(tokeni[1]), tokeni[2] ,tipSobeMng.NameToObject(tokeni[3]), dodatnaUslugaMng.ListToObject(tokeniUslugeList), tokeni[5], tokeni[6], Integer.parseInt(tokeni[7])));
 			}
 			br.close();
 		} catch (IOException e) {

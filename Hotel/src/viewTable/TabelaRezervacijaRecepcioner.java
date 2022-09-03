@@ -40,6 +40,7 @@ import entity.Soba;
 import entity.TipSobe;
 import entity.Zaposlen;
 import entity.Rezervacija.Status;
+import entity.Soba.StatusSobe;
 import manage.GostManager;
 import manage.ManagerFactory;
 import model.GostModel;
@@ -269,12 +270,12 @@ public class TabelaRezervacijaRecepcioner extends JFrame {
 					Rezervacija s = factoryMng.getRezervacijaMng().IdToObject(id);
 					LocalDate ldIn = LocalDate.parse(s.getCheckInDateStr(), DateTimeFormatter.ofPattern("dd.MM.uuuu."));
 					if(ldIn.equals(LocalDate.now())) {
-						if (s.getStatus().equals(Status.POTVRDJENA)) {
+						if (s.getStatus().equals(Status.POTVRDJENA) && s.getIdSobe() == -1) {
 							CheckInWindow ciw = new CheckInWindow(factoryMng, s);
 							ciw.setVisible(true);
 						}
 						else {
-							JOptionPane.showMessageDialog(null, "Rezervacija nije potvrđena", "Greska", JOptionPane.WARNING_MESSAGE);
+							JOptionPane.showMessageDialog(null, "Rezervacija nije potvrđena ili je već check-in-ovana", "Greska", JOptionPane.WARNING_MESSAGE);
 
 						}
 					}
@@ -287,8 +288,33 @@ public class TabelaRezervacijaRecepcioner extends JFrame {
 				}
 			}
 		});
-		
+
+		btnCheckOut.addActionListener(new ActionListener() {
+			
+			public void actionPerformed(ActionEvent e) {
+				int red = table.getSelectedRow();
+				if(red == -1) {
+					JOptionPane.showMessageDialog(null, "Morate odabrati red u tabeli.", "Greska", JOptionPane.WARNING_MESSAGE);
+				}
+				else {
+					int id = (int) table.getValueAt(red, 0);
+					Rezervacija s = factoryMng.getRezervacijaMng().IdToObject(id);
+					LocalDate ldOut = LocalDate.parse(s.getCheckOutDateStr(), DateTimeFormatter.ofPattern("dd.MM.uuuu."));
+					if(ldOut.equals(LocalDate.now())) {
+						factoryMng.getSobaMng().IdToObject(s.getIdSobe()).setStatus(StatusSobe.SPREMANJE);
+						s.setIdSobe(-1);
+					}
+					else {
+						JOptionPane.showMessageDialog(null, "Gost može da se check-outuje samo na poslednji dan rezervacije", "Greska", JOptionPane.WARNING_MESSAGE);
+
+					}
+
+					
+				}
+			}
+		});
 	}
+
 
 	
 	

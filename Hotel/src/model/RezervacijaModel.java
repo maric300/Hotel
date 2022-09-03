@@ -14,7 +14,7 @@ import manage.SobaManager;
 public class RezervacijaModel extends AbstractTableModel {
 	private static final long serialVersionUID = 173122351138550735L;
 	private RezervacijaManager rezervacijaMng;
-	private String[] columnNames = { "ID", "Status", "Gost", "Tip sobe", "Dodatne usluge", "Check-in", "Check-out"};
+	private String[] columnNames = { "ID", "Status", "Gost", "Tip sobe", "Dodatne usluge", "Check-in", "Check-out", "Id sobe"};
 
 	public RezervacijaModel(RezervacijaManager mng) {
 		this.rezervacijaMng = mng;
@@ -55,6 +55,8 @@ public class RezervacijaModel extends AbstractTableModel {
 				return g.getCheckInDateStr();
 			case 6:
 				return g.getCheckOutDateStr();
+			case 7:
+				return g.getIdSobe();
 			default:
 				return null;
 			}

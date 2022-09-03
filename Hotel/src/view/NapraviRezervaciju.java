@@ -236,10 +236,10 @@ public class NapraviRezervaciju extends JFrame {
 				
 				if (isOk == true) {
 					if (ulogovaniGost == null) {
-						factoryMng.getRezervacijaMng().getRezervacije().add(new Rezervacija(id, status, "admin", tipSobe, dodatnaUslugaList, checkInDateStr, checkOutdateStr));
+						factoryMng.getRezervacijaMng().getRezervacije().add(new Rezervacija(id, status, "admin", tipSobe, dodatnaUslugaList, checkInDateStr, checkOutdateStr, -1));
 					}
 					else {
-						factoryMng.getRezervacijaMng().getRezervacije().add(new Rezervacija(id, status, ulogovaniGost.getEmail(), tipSobe, dodatnaUslugaList, checkInDateStr, checkOutdateStr));
+						factoryMng.getRezervacijaMng().getRezervacije().add(new Rezervacija(id, status, ulogovaniGost.getEmail(), tipSobe, dodatnaUslugaList, checkInDateStr, checkOutdateStr, -1));
 					}
 					dispose();
 				}

@@ -85,16 +85,30 @@ public class CheckInWindow extends JFrame {
 		btnCheckIn.addActionListener(new ActionListener() {
 			
 			public void actionPerformed(ActionEvent e) {
-				
+				List<String> dodatnaUslugaStrList = lstDodatneUsluge.getSelectedValuesList();
+				if (dodatnaUslugaStrList.size() != 0) {
+					List<DodatnaUsluga> dodatnaUslugaList = factoryMng.getUslugaMng().ListToObject(dodatnaUslugaStrList);
+					rezervacija.getDodatnaUslugaList().addAll(dodatnaUslugaList);
+				}
 				int idSobe = Integer.parseInt(lstSobe.getSelectedValue().toString());
 				Soba checkInSoba = factoryMng.getSobaMng().IdToObject(idSobe);
 				checkInSoba.setStatus(StatusSobe.ZAUZETO);
-				
+				rezervacija.setIdSobe(idSobe);
+				setVisible(false);
+				dispose();
 			}
 		});
 		
 		btnCancel = new JButton("Cancel");
 		add(btnCancel);
+		
+		btnCancel.addActionListener(new ActionListener() {
+			
+			public void actionPerformed(ActionEvent e) {
+				setVisible(false);
+				dispose();
+			}
+		});
 		
 		
 		
