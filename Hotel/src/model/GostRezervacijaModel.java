@@ -11,18 +11,20 @@ import entity.Soba;
 import manage.RezervacijaManager;
 import manage.SobaManager;
 
-public class RezervacijaModel extends AbstractTableModel {
+public class GostRezervacijaModel extends AbstractTableModel {
 	private static final long serialVersionUID = 173122351138550735L;
 	private RezervacijaManager rezervacijaMng;
+	private String emailGosta;
 	private String[] columnNames = { "ID", "Status", "Gost", "Tip sobe", "Dodatne usluge", "Check-in", "Check-out", "Id sobe", "Cena"};
 
-	public RezervacijaModel(RezervacijaManager mng) {
+	public GostRezervacijaModel(RezervacijaManager mng, String emailGosta) {
 		this.rezervacijaMng = mng;
+		this.emailGosta = emailGosta;
 	}
 
 	@Override
 	public int getRowCount() {
-		return rezervacijaMng.getRezervacije().size();
+		return rezervacijaMng.getRezervacijeGosta(emailGosta).size();
 	}
 
 	@Override
@@ -32,8 +34,8 @@ public class RezervacijaModel extends AbstractTableModel {
 
 	@Override
 	public Object getValueAt(int rowIndex, int columnIndex) {
-		if (rezervacijaMng.getRezervacije().size() != 0) {
-			Rezervacija g = rezervacijaMng.getRezervacije().get(rowIndex);
+		if (rezervacijaMng.getRezervacijeGosta(emailGosta).size() != 0) {
+			Rezervacija g = rezervacijaMng.getRezervacijeGosta(emailGosta).get(rowIndex);
 
 			switch (columnIndex) {
 			case 0:

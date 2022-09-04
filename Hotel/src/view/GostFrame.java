@@ -25,6 +25,8 @@ import javax.swing.JLabel;
 import javax.swing.JTextPane;
 import javax.swing.JTextArea;
 import net.miginfocom.swing.MigLayout;
+import viewTable.GostTabelaRezervacija;
+
 import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
 
@@ -85,6 +87,18 @@ public class GostFrame extends JFrame {
 			}
 		});
 		contentPane.add(btnNapraviRezervaciju, "cell 1 3");
+		
+		JButton btnMojeRezervacije = new JButton("Moje rezervacije");
+		btnMojeRezervacije.addActionListener(new ActionListener() {
+			
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				GostTabelaRezervacija gtr = new GostTabelaRezervacija(factoryMng, ulogovaniGost.getEmail());
+				gtr.setVisible(true);
+				
+			}
+		});
+		contentPane.add(btnMojeRezervacije);
 		
 		
 	}

@@ -7,6 +7,7 @@ import java.time.LocalDate;
 import java.time.Year;
 import java.time.format.DateTimeFormatter;
 import java.util.List;
+import java.util.Map;
 import java.util.concurrent.ThreadLocalRandom;
 
 import javax.swing.JButton;
@@ -19,6 +20,7 @@ import javax.swing.ListSelectionModel;
 import javax.swing.border.EmptyBorder;
 
 import entity.TipSobe;
+import entity.CenovnikTipSobe;
 import entity.DodatnaUsluga;
 import entity.Gost;
 import entity.Rezervacija;
@@ -28,6 +30,7 @@ import net.miginfocom.swing.MigLayout;
 import java.awt.event.ActionListener;
 import java.text.SimpleDateFormat;
 import java.awt.event.ActionEvent;
+import java.time.temporal.ChronoUnit;
 
 public class NapraviRezervaciju extends JFrame {
 
@@ -188,6 +191,7 @@ public class NapraviRezervaciju extends JFrame {
 				List<Rezervacija> rezervacije = factoryMng.getRezervacijaMng().getRezervacije();
 				int id;
 				Boolean isOk = true;
+				int ukupnaCena = 0;
 				while (true) {
 					Boolean isValid = true;
 					id = ThreadLocalRandom.current().nextInt(0, 9999);
@@ -231,15 +235,28 @@ public class NapraviRezervaciju extends JFrame {
 						lbError.setText("check-in datum mora biti nakon danasnjeg datuma!");
 						isOk = false;
 					}
+					long opseg = ChronoUnit.DAYS.between(ldIn, ldOut);
+					CenovnikTipSobe cenovnik = factoryMng.getCenovnikTipSobeMng().NameToObject(tipSobe.getNaziv());
+					if (cenovnik != null) {
+						Map<LocalDate, Integer> hmCenaTipSobe = cenovnik.getCene();
+						LocalDate latestDate = factoryMng.getCenovnikTipSobeMng().getLatestDate(hmCenaTipSobe);
+						int cenaTipa = hmCenaTipSobe.get(latestDate);
+						ukupnaCena = (int) (cenaTipa * opseg);
+					}
+					else {
+						ukupnaCena = (int) (tipSobe.getCenaPoNocenju() * opseg);
+					}
 				}
 				
 				
 				if (isOk == true) {
+					
 					if (ulogovaniGost == null) {
-						factoryMng.getRezervacijaMng().getRezervacije().add(new Rezervacija(id, status, "admin", tipSobe, dodatnaUslugaList, checkInDateStr, checkOutdateStr, -1));
+						factoryMng.getRezervacijaMng().getRezervacije().add(new Rezervacija(id, status, "admin", tipSobe, dodatnaUslugaList, checkInDateStr, checkOutdateStr, -1, ukupnaCena));
 					}
 					else {
-						factoryMng.getRezervacijaMng().getRezervacije().add(new Rezervacija(id, status, ulogovaniGost.getEmail(), tipSobe, dodatnaUslugaList, checkInDateStr, checkOutdateStr, -1));
+						
+						factoryMng.getRezervacijaMng().getRezervacije().add(new Rezervacija(id, status, ulogovaniGost.getEmail(), tipSobe, dodatnaUslugaList, checkInDateStr, checkOutdateStr, -1, ukupnaCena));
 					}
 					dispose();
 				}

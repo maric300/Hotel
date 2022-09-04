@@ -12,6 +12,7 @@ public class ManagerFactory {
 	private SobaManager sobaMng;
 	private SredjivanjeSobaManager sredjivanjeMng;
 	private CenovnikTipSobeManager cenovnikTipSobeMng;
+	private CenovnikDodatneUslugeManager cenovnikDodatneUslugeMng;
 	
 	public ManagerFactory(AppSettings appSettings) {
 		this.appSettings = appSettings;
@@ -23,6 +24,7 @@ public class ManagerFactory {
 		this.sobaMng = new SobaManager(this.appSettings.getSobaFilename(), tipSobeMng);
 		this.sredjivanjeMng = new SredjivanjeSobaManager(this.appSettings.getSredjivanjeSobaFilename());
 		this.cenovnikTipSobeMng = new CenovnikTipSobeManager(this.appSettings.getCenovnikTipSobeFilename());
+		this.cenovnikDodatneUslugeMng = new CenovnikDodatneUslugeManager(this.appSettings.getCenovnikDodatneUslugeFilename());
 	}
 	
 	public GostManager getGostMng() {
@@ -57,6 +59,10 @@ public class ManagerFactory {
 		return cenovnikTipSobeMng;
 	}
 	
+	public CenovnikDodatneUslugeManager getCenovnikDodatneUslugeMng() {
+		return cenovnikDodatneUslugeMng;
+	}
+	
 	public void loadData() {
 		this.gostMng.loadData();
 		this.uslugaMng.loadData();
@@ -66,15 +72,18 @@ public class ManagerFactory {
 		this.sobaMng.loadData();
 		this.sredjivanjeMng.loadData();
 		this.cenovnikTipSobeMng.loadData();
+		this.cenovnikDodatneUslugeMng.loadData();
 	}
 	
 	public void saveData() {
 		this.gostMng.saveData();
+		this.uslugaMng.saveData();
 		this.zaposlenMng.saveData();
 		this.tipSobeMng.saveData();
 		this.rezervacijaMng.saveData();
 		this.sobaMng.saveData();
 		this.sredjivanjeMng.saveData();
 		this.cenovnikTipSobeMng.saveData();
+		this.cenovnikDodatneUslugeMng.saveData();
 	}
 }

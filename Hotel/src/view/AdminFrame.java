@@ -7,6 +7,8 @@ import javax.swing.border.EmptyBorder;
 
 import manage.ManagerFactory;
 import model.GostModel;
+import viewTable.TabelaCenovnikaTipaSobe;
+import viewTable.TabelaDodatnihUsluga;
 import viewTable.TabelaRezervacija;
 import viewTable.TabelaSoba;
 import viewTable.TabelaTipovaSoba;
@@ -112,7 +114,36 @@ public class AdminFrame extends JFrame {
 		mnPrikazi.add(mntmRezervacije);
 		
 		JMenuItem mntmTipoviSobe = new JMenuItem("Prikaži tipove soba");
-				mnPrikazi.add(mntmTipoviSobe);
+		mnPrikazi.add(mntmTipoviSobe);
+		
+		JMenuItem mntmDodatneUsluge = new JMenuItem("Prikaži dodatne usluge");
+		mnPrikazi.add(mntmDodatneUsluge);
+				
+		JMenuItem mntmCenovnikTipovaSoba = new JMenuItem("Prikaži cenovnik tipova soba");
+		mnPrikazi.add(mntmCenovnikTipovaSoba);
+		
+		JMenuItem mntmCenovnikDodatnihUsluga= new JMenuItem("Prikaži cenovnik dodatnih usluga");
+		mnPrikazi.add(mntmCenovnikDodatnihUsluga);
+		
+		mntmDodatneUsluge.addActionListener(new ActionListener() {
+			
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				TabelaDodatnihUsluga tdu = new TabelaDodatnihUsluga(factoryMng);
+				tdu.setVisible(true);
+
+			}
+		});
+		
+		mntmCenovnikTipovaSoba.addActionListener(new ActionListener() {
+			
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				TabelaCenovnikaTipaSobe tcts = new TabelaCenovnikaTipaSobe(factoryMng);
+				tcts.setVisible(true);
+
+			}
+		});
 		
 		mntmTipoviSobe.addActionListener(new ActionListener() {
 			
@@ -120,8 +151,7 @@ public class AdminFrame extends JFrame {
 			public void actionPerformed(ActionEvent e) {
 				TabelaTipovaSoba tts = new TabelaTipovaSoba(factoryMng);
 				tts.setVisible(true);
-				NapraviCenovnikTipSobe nct = new NapraviCenovnikTipSobe(null, factoryMng, null);
-				nct.setVisible(true);
+
 			}
 		});
 		

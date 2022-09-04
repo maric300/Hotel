@@ -16,21 +16,23 @@ import manage.CenovnikTipSobeManager;
 import manage.SobaManager;
 import manage.TipSobeManager;
 
-public class CenovnikTipSobeModel extends AbstractTableModel {
+public class DetaljanCenovnikTipSobeModel extends AbstractTableModel {
 	private static final long serialVersionUID = 173122351138550735L;
 	private CenovnikTipSobeManager mng;
 	private TipSobeManager tipSobeMng;
-	private String[] columnNames = { "Naziv", "Datum ", "Aktuelna cena"};
+	private Map<LocalDate, Integer> mapa;
+	private String[] columnNames = { "Datum", "Cena"};
 
-	public CenovnikTipSobeModel(CenovnikTipSobeManager mng, TipSobeManager tipSobeMng) {
+	public DetaljanCenovnikTipSobeModel(CenovnikTipSobeManager mng, TipSobeManager tipSobeMng, Map<LocalDate, Integer> mapa) {
 		this.mng = mng;
 		this.tipSobeMng = tipSobeMng;
+		this.mapa = mapa;
 				
 	}
 
 	@Override
 	public int getRowCount() {
-		return mng.getCenovnici().size();
+		return mapa.size();
 	}
 
 	@Override
@@ -42,23 +44,11 @@ public class CenovnikTipSobeModel extends AbstractTableModel {
 	public Object getValueAt(int rowIndex, int columnIndex) {
 		
 		if (mng.getCenovnici().size() != 0) {
-			CenovnikTipSobe s = mng.getCenovnici().get(rowIndex);
-			Map<LocalDate, Integer> hmCene = s.getCene();
-			LocalDate latestD = mng.getLatestDate(hmCene);
-			int aktuelnaCena = 0;
-			if (latestD.equals(LocalDate.now())) {
-				aktuelnaCena = tipSobeMng.NameToObject(s.getNaziv()).getCenaPoNocenju();
-			}
-			else {
-				aktuelnaCena = hmCene.get(latestD);
-			}
-			String formattedDate = latestD.format(DateTimeFormatter.ofPattern("dd.MMM.yyyy."));
+			String formattedDate = datum.format(DateTimeFormatter.ofPattern("dd.MMM.yyyy."));
 			switch (columnIndex) {
 			case 0:
-				return s.getNaziv();
-			case 1:
 				return formattedDate;
-			case 2:
+			case 1:
 				return aktuelnaCena;
 			default:
 				return null;

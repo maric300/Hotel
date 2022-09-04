@@ -1,8 +1,7 @@
-dorucak;2
-rucak;4
-vecera;3
-klima;1
-terasa;3
-parking;3
-bilijar;3
-kuhinja;5
+dorucak;200
+ručak;400
+večera;300
+parking;300
+bilijar;300
+kuhinja;500
+užina;120

@@ -28,5 +28,9 @@ public class DodatnaUsluga {
 		this.cena = cena;
 	}
 	
+	public String toFileString() {
+		return this.getNaziv() + ";" + this.getCena();
+	}
+	
 	
 }

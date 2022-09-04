@@ -16,6 +16,7 @@ import java.util.Scanner;
 
 import javax.net.ssl.SSLEngineResult.Status;
 
+import entity.CenovnikDodatneUsluge;
 import entity.CenovnikTipSobe;
 import entity.Gost;
 import entity.Osoba;
@@ -26,27 +27,27 @@ import entity.Zaposlen;
 import entity.Zaposlen.Posao;
 import entity.Zaposlen.Posao.*; 
 
-public class CenovnikTipSobeManager {
-	private List<CenovnikTipSobe> cenovnici;
+public class CenovnikDodatneUslugeManager {
+	private List<CenovnikDodatneUsluge> cenovnici;
 	
 	private String cenovnikFile;
-	private CenovnikTipSobeManager cenovnikTipSobeMng;
+	private CenovnikDodatneUslugeManager cenovnikDodatneUslugeMng;
 	
-	public CenovnikTipSobeManager(String cenovnikFile) {
+	public CenovnikDodatneUslugeManager(String cenovnikFile) {
 		super();
 		this.cenovnikFile = cenovnikFile;
-		this.cenovnikTipSobeMng = cenovnikTipSobeMng;
-		this.cenovnici = new ArrayList<CenovnikTipSobe>();
+		this.cenovnikDodatneUslugeMng = cenovnikDodatneUslugeMng;
+		this.cenovnici = new ArrayList<CenovnikDodatneUsluge>();
 	}
 	
 	
 	
-	public List<CenovnikTipSobe> getCenovnici() {
+	public List<CenovnikDodatneUsluge> getCenovnici() {
 		return cenovnici;
 	}
 	
-	public CenovnikTipSobe NameToObject(String naziv) {
-		for (CenovnikTipSobe cenovnik : cenovnici) {
+	public CenovnikDodatneUsluge NameToObject(String naziv) {
+		for (CenovnikDodatneUsluge cenovnik : cenovnici) {
 			if (cenovnik.getNaziv().equals(naziv)) {
 				return cenovnik;
 			}
@@ -56,7 +57,7 @@ public class CenovnikTipSobeManager {
 	
 
 	public void remove(String naziv) {
-		CenovnikTipSobe s = this.NameToObject(naziv);
+		CenovnikDodatneUsluge s = this.NameToObject(naziv);
 		cenovnici.remove(s);
 	}
 	
@@ -89,7 +90,7 @@ public class CenovnikTipSobeManager {
 						mapa.put(ld, Integer.parseInt(tokeniPar[1]));
 					}
 				}		
-				this.cenovnici.add(new CenovnikTipSobe(tokeni[0], mapa));
+				this.cenovnici.add(new CenovnikDodatneUsluge(tokeni[0], mapa));
 			}
 			br.close();
 		} catch (IOException e) {
@@ -102,7 +103,7 @@ public class CenovnikTipSobeManager {
 		PrintWriter pw = null;
 		try {
 			pw = new PrintWriter(new FileWriter(this.cenovnikFile, false));
-			for (CenovnikTipSobe s : cenovnici) {
+			for (CenovnikDodatneUsluge s : cenovnici) {
 				pw.println(s.toFileString());
 			}
 			pw.close();

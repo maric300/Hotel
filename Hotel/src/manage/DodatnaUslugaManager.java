@@ -2,7 +2,9 @@ package manage;
 
 import java.io.BufferedReader;
 import java.io.FileReader;
+import java.io.FileWriter;
 import java.io.IOException;
+import java.io.PrintWriter;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -60,5 +62,39 @@ public class DodatnaUslugaManager {
 			return false;
 		}
 		return true;
+	}
+	
+	public boolean saveData() {
+		PrintWriter pw = null;
+		try {
+			pw = new PrintWriter(new FileWriter(this.dodatnaUslugaFile, false));
+			for (DodatnaUsluga t : listaDodatnihUsluga) {
+				pw.println(t.toFileString());
+			}
+			pw.close();
+		} catch (IOException e) {
+			return false;
+		}
+		return true;
+	}
+
+	public void edit(String oldNaziv, String naziv, int cena) {
+		if (oldNaziv.equals(naziv)) {
+			DodatnaUsluga usluga = this.NameToObject(naziv);
+			usluga.setNaziv(naziv);
+			usluga.setCena(cena);
+		}
+		else {
+			DodatnaUsluga usluga = this.NameToObject(oldNaziv);
+			usluga.setNaziv(naziv);
+			usluga.setCena(cena);
+		}
+		
+	}
+	
+	public void remove(String naziv) {
+		DodatnaUsluga usluga = this.NameToObject(naziv);
+		this.listaDodatnihUsluga.remove(usluga);
+		
 	}
 }

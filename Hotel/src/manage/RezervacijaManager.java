@@ -36,6 +36,7 @@ public class RezervacijaManager {
 	
 	
 	
+	
 	public List<Rezervacija> getRezervacije() {
 		return rezervacije;
 	}
@@ -46,6 +47,15 @@ public class RezervacijaManager {
 		this.rezervacije = rezervacije;
 	}
 
+	public List<Rezervacija> getRezervacijeGosta(String email) {
+		List<Rezervacija> returnList = new ArrayList<Rezervacija>();
+		for (Rezervacija rezervacija : this.getRezervacije()) {
+			if (rezervacija.getUsernameGosta().equals(email)) {
+				returnList.add(rezervacija);
+			}
+		}
+		return returnList;
+	}
 
 
 	public boolean loadData() {
@@ -60,7 +70,7 @@ public class RezervacijaManager {
 				for (String usluga : tokeniUsluge) {
 					tokeniUslugeList.add(usluga);
 				}
-				this.rezervacije.add(new Rezervacija(Integer.parseInt(tokeni[0]), Status.valueOf(tokeni[1]), tokeni[2] ,tipSobeMng.NameToObject(tokeni[3]), dodatnaUslugaMng.ListToObject(tokeniUslugeList), tokeni[5], tokeni[6], Integer.parseInt(tokeni[7])));
+				this.rezervacije.add(new Rezervacija(Integer.parseInt(tokeni[0]), Status.valueOf(tokeni[1]), tokeni[2] ,tipSobeMng.NameToObject(tokeni[3]), dodatnaUslugaMng.ListToObject(tokeniUslugeList), tokeni[5], tokeni[6], Integer.parseInt(tokeni[7]), Integer.parseInt(tokeni[8])));
 			}
 			br.close();
 		} catch (IOException e) {
