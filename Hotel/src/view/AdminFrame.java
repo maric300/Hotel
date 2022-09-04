@@ -9,6 +9,7 @@ import manage.ManagerFactory;
 import model.GostModel;
 import viewTable.TabelaRezervacija;
 import viewTable.TabelaSoba;
+import viewTable.TabelaTipovaSoba;
 import viewTable.TabelaZaposlenih;
 
 import javax.swing.JMenuBar;
@@ -109,6 +110,20 @@ public class AdminFrame extends JFrame {
 		
 		JMenuItem mntmRezervacije = new JMenuItem("Prikaži rezervacije");
 		mnPrikazi.add(mntmRezervacije);
+		
+		JMenuItem mntmTipoviSobe = new JMenuItem("Prikaži tipove soba");
+				mnPrikazi.add(mntmTipoviSobe);
+		
+		mntmTipoviSobe.addActionListener(new ActionListener() {
+			
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				TabelaTipovaSoba tts = new TabelaTipovaSoba(factoryMng);
+				tts.setVisible(true);
+				NapraviCenovnikTipSobe nct = new NapraviCenovnikTipSobe(null, factoryMng, null);
+				nct.setVisible(true);
+			}
+		});
 		
 		mntmRezervacije.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {

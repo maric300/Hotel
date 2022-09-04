@@ -42,6 +42,29 @@ public class TipSobeManager {
 		}
 		return null;
 	}
+	
+	public void edit(int brojMesta, String oldNaziv, String naziv, int cenaPoNocenju) {
+		
+		if(oldNaziv.equals(naziv)) {
+			TipSobe tipSobe = this.NameToObject(naziv);
+			tipSobe.setBrojMesta(brojMesta);
+			tipSobe.setCenaPoNocenju(cenaPoNocenju);
+			tipSobe.setNaziv(naziv);
+		}
+		
+		else {
+			TipSobe tipSobe = this.NameToObject(oldNaziv);
+			tipSobe.setBrojMesta(brojMesta);
+			tipSobe.setCenaPoNocenju(cenaPoNocenju);
+			tipSobe.setNaziv(naziv);
+		}
+		
+		
+	}
+	public void remove(String naziv) {
+		TipSobe tipSobe = this.NameToObject(naziv);
+		this.tipoviSobe.remove(tipSobe);
+	}
 
 
 
@@ -53,7 +76,7 @@ public class TipSobeManager {
 			while ((linija = br.readLine()) != null) {
 				System.out.println(linija);
 				String[] tokeni = linija.split(";");
-				this.tipoviSobe.add(new TipSobe(Integer.parseInt(tokeni[0]), tokeni[1]));
+				this.tipoviSobe.add(new TipSobe(Integer.parseInt(tokeni[0]), tokeni[1], Integer.parseInt(tokeni[2])));
 			}
 			br.close();
 		} catch (IOException e) {

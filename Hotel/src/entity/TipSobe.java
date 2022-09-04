@@ -3,10 +3,12 @@ package entity;
 public class TipSobe {
 	private int brojMesta;
 	private String naziv;
-	public TipSobe(int brojMesta, String naziv) {
+	private int cenaPoNocenju;
+	public TipSobe(int brojMesta, String naziv, int cenaPoNocenju) {
 		super();
 		this.brojMesta = brojMesta;
 		this.naziv = naziv;
+		this.cenaPoNocenju = cenaPoNocenju;
 	}
 	public int getBrojMesta() {
 		return brojMesta;
@@ -20,8 +22,16 @@ public class TipSobe {
 	public void setNaziv(String naziv) {
 		this.naziv = naziv;
 	}
-	public String toFileString() {
-		return this.getBrojMesta() + ";" + this.getNaziv();
+	
+	public int getCenaPoNocenju() {
+		return cenaPoNocenju;
 	}
+	public void setCenaPoNocenju(int cenaPoNocenju) {
+		this.cenaPoNocenju = cenaPoNocenju;
+	}
+	public String toFileString() {
+		return this.getBrojMesta() + ";" + this.getNaziv() + ";" + this.getCenaPoNocenju();
+	}
+	
 	
 }
