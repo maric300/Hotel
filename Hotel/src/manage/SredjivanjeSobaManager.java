@@ -7,7 +7,9 @@ import java.io.FileWriter;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Scanner;
 
@@ -40,6 +42,30 @@ public class SredjivanjeSobaManager {
 			}
 		}
 		return null;
+	}
+	
+	public HashMap<String, Integer> SredjivanjeSobaUOpsegu(LocalDate datum1, LocalDate datum2) {
+		HashMap<String, Integer> hmRet = new HashMap<String, Integer>();
+		
+		List<SredjivanjeSoba> sredjivanja = this.getSredjivanjeSobaLista();
+		for (SredjivanjeSoba sredjivanje : sredjivanja) {
+			LocalDate datumSredjivanja = LocalDate.parse(sredjivanje.getDatumCiscenjaStr(), DateTimeFormatter.ofPattern("dd.MM.uuuu."));
+			if (datumSredjivanja.isBefore(datum2) && datumSredjivanja.isAfter(datum1)) {
+				String ime = sredjivanje.getImeSobarice();
+				if (hmRet.containsKey(ime)) {
+					System.out.println("da1");
+					int broj = hmRet.get(ime);
+					hmRet.replace(ime, broj + sredjivanje.getBrOciscenjihSoba());
+				}
+				else {
+					hmRet.put(ime, sredjivanje.getBrOciscenjihSoba());	
+					System.out.println("da2");
+				}
+				
+
+			}
+		}
+		return hmRet;
 	}
 	public boolean loadData() {
 		
