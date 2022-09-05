@@ -115,7 +115,14 @@ public NapraviDetaljanCenovnikDodatneUsluge (JFrame parent, ManagerFactory facto
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				Boolean isOk = true;
-				String oldDatumStr = factoryMng.getCenovnikTipSobeMng().getDatumString(datum);
+				String oldDatumStr;
+				if (datum != null) {
+					oldDatumStr = factoryMng.getCenovnikTipSobeMng().getDatumString(datum);
+
+				}
+				else {
+					oldDatumStr = "01.01.1901.";
+				}
 				String datumStr = choiceDay.getSelectedItem() + "." + choiceMonth.getSelectedItem() + "." + choiceYear.getSelectedItem() + ".";
 
 				try {
@@ -167,7 +174,8 @@ public NapraviDetaljanCenovnikDodatneUsluge (JFrame parent, ManagerFactory facto
 					}
 					
 					
-					((DetaljnaTabelaCenovnikaDodatneUsluge) parent) .refreshData();
+					parent.setVisible(false);
+					setVisible(false);
 					dispose();	
 					}
 					

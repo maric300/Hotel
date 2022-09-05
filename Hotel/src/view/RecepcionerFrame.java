@@ -21,11 +21,13 @@ import java.awt.event.WindowEvent;
 import java.awt.event.ActionEvent;
 import net.miginfocom.swing.MigLayout;
 import viewTable.TabelaRezervacijaRecepcioner;
+import viewTable.TabelaSobaRecepcioner;
 
 public class RecepcionerFrame extends JFrame {
 
 	private JPanel contentPane;
 	protected JButton rezervacijeBtn = new JButton("Rezervacije");
+	protected JButton sobeBtn = new JButton("Sobe");
 
 	/**
 	 * Launch the application.
@@ -77,6 +79,14 @@ public class RecepcionerFrame extends JFrame {
 		setContentPane(contentPane);
 		contentPane.setLayout(new MigLayout("fill", "[][][]", "[][][]"));
 		contentPane.add(rezervacijeBtn);
+		contentPane.add(sobeBtn);
+		
+		sobeBtn.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				TabelaSobaRecepcioner trr = new TabelaSobaRecepcioner(factoryMng);
+				trr.setVisible(true);
+			}
+		});
 		
 		rezervacijeBtn.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {

@@ -81,10 +81,6 @@ public class TabelaCenovnikaTipaSobe extends JFrame {
 		mainToolbar.add(btnAdd);
 		ImageIcon editIcon = new ImageIcon("img/edit.gif");
 		btnEdit.setIcon(editIcon);
-		mainToolbar.add(btnEdit);
-		ImageIcon deleteIcon = new ImageIcon("img/remove.gif");
-		btnDelete.setIcon(deleteIcon);
-		mainToolbar.add(btnDelete);
 		mainToolbar.add(Box.createHorizontalGlue());
 		mainToolbar.add(btnDetaljnije);
 		mainToolbar.setFloatable(false);		

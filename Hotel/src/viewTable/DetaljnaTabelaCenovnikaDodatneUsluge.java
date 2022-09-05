@@ -159,7 +159,7 @@ public class DetaljnaTabelaCenovnikaDodatneUsluge extends JFrame {
 		btnAdd.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 
-				NapraviCenovnikDodatneUsluge nct = new NapraviCenovnikDodatneUsluge(DetaljnaTabelaCenovnikaDodatneUsluge.this, factoryMng, null);
+				NapraviDetaljanCenovnikDodatneUsluge nct = new NapraviDetaljanCenovnikDodatneUsluge(DetaljnaTabelaCenovnikaDodatneUsluge.this, factoryMng, null, trenutniCenovnik);
 				nct.setVisible(true);
 			}
 		});

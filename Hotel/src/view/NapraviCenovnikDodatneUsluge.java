@@ -191,7 +191,8 @@ public class NapraviCenovnikDodatneUsluge extends JFrame {
 					else {
 //						factoryMng.getTipSobeMng().edit(Integer.parseInt(tfBrojMesta.getText()), oldNaziv, tfTipSobe.getText(), Integer.parseInt(tfCena.getText()));
 					}
-					((DetaljnaTabelaCenovnikaDodatneUsluge) parent) .refreshData();
+					setVisible(false);
+					parent.setVisible(false);
 					dispose();
 				}
 				

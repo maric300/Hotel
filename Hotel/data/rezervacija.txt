@@ -3,7 +3,7 @@
 1723;POTVRDJENA;maric300;dvokrevetna;ručak;05.10.2022.;08.10.2022.;-1;9999
 4916;NA_CEKANJU;maric300;dvokrevetna;večera;01.10.2022.;05.10.2022.;-1;9999
 1321;OTKAZANA;maric300;dvokrevetna;bilijar:dorucak:večera;01.05.2022.;03.05.2022.;2;9999
-5230;POTVRDJENA;maric300;dvokrevetna;;05.10.2022.;11.10.2022.;-1;30000
+5230;POTVRDJENA;maric300;dvokrevetna;večera;05.10.2022.;11.10.2022.;-1;30000
 35;NA_CEKANJU;maric300;jednokrevetna sa lezajem;večera;05.07.2022.;10.07.2022.;-1;20000
 653;ODBIJENA;maric300;jednokrevetna;dorucak:ručak;10.09.2022.;14.09.2022.;-1;9800
 9570;POTVRDJENA;maric300;cetvorokrevetna;dorucak:ručak:kuhinja;06.01.2022.;13.01.2022.;-1;31850

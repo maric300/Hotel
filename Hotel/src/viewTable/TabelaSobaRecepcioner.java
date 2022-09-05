@@ -1,17 +1,19 @@
 package viewTable;
 import java.awt.BorderLayout;
 import java.awt.Color;
+import java.awt.EventQueue;
 import java.awt.FlowLayout;
 import java.awt.Image;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
+import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
-import javax.swing.Box;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JFrame;
@@ -30,21 +32,19 @@ import javax.swing.event.DocumentListener;
 import javax.swing.table.AbstractTableModel;
 import javax.swing.table.TableRowSorter;
 
-import entity.CenovnikDodatneUsluge;
-import entity.CenovnikTipSobe;
-
+import entity.Gost;
+import entity.Soba;
+import entity.Zaposlen;
+import manage.GostManager;
 import manage.ManagerFactory;
-import model.CenovnikDodatneUslugeModel;
-import view.NapraviCenovnikDodatneUsluge;
+import model.GostModel;
+import model.SobaModel;
+import view.NapraviSobu;
+import view.RegistracijaZaposlenog;
 
-public class TabelaCenovnikaDodatneUsluge extends JFrame {
+public class TabelaSobaRecepcioner extends JFrame {
 
-	/**
-   * 
-   */
-  private static final long serialVersionUID = 1L;
-
-  private JPanel contentPane;
+	private JPanel contentPane;
 	
 	private ManagerFactory factoryMng;
 
@@ -55,37 +55,28 @@ public class TabelaCenovnikaDodatneUsluge extends JFrame {
 	protected JTextField tfSearch = new JTextField(20);
 	protected TableRowSorter<AbstractTableModel> tableSorter = new TableRowSorter<AbstractTableModel>();
 	protected JTable table;
-	protected JButton btnDetaljnije = new JButton("Detaljnije");
 
-	public TabelaCenovnikaDodatneUsluge(ManagerFactory factoryMng) {
+	public TabelaSobaRecepcioner(ManagerFactory factoryMng) {
 		this.factoryMng = factoryMng;
 		setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
 		setBounds(100, 100, 450, 300);
 		contentPane = new JPanel();
 		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
 		contentPane.setLayout(new BorderLayout(0, 0));
-		setTitle("Cenovnik dodatnih usluga");
+		setTitle("Sobe");
 		setContentPane(contentPane);
 		setLocationRelativeTo(null);		
-		setIconImage(new ImageIcon("img/icon.png").getImage());
+			
 		
-		ImageIcon addIcon = new ImageIcon("img/add.png");		
-		ImageIcon scaled = new ImageIcon(addIcon.getImage().getScaledInstance(20, 20, Image.SCALE_SMOOTH));
-		addIcon = scaled;
-		ImageIcon deleteIcon = new ImageIcon("img/remove.gif");
-		btnDelete.setIcon(deleteIcon);
-		mainToolbar.add(Box.createHorizontalGlue());
-		mainToolbar.add(btnDetaljnije);
 		mainToolbar.setFloatable(false);		
 		add(mainToolbar, BorderLayout.NORTH);
 		
-		
-		CenovnikDodatneUslugeModel mdl = new CenovnikDodatneUslugeModel(factoryMng.getCenovnikDodatneUslugeMng(), factoryMng.getUslugaMng());
+		SobaModel mdl = new SobaModel(factoryMng.getSobaMng());
 		table = new JTable(mdl);
 		table.getSelectionModel().setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
 		table.getTableHeader().setReorderingAllowed(false);
 		// podesavanje manuelnog sortera tabele, potrebno i za pretragu
-		if (factoryMng.getCenovnikDodatneUslugeMng().getCenovnici().size() != 0) {
+		if (factoryMng.getSobaMng().getSobe().size() != 0) {
 			tableSorter.setModel((AbstractTableModel) table.getModel());
 		}
 		table.setRowSorter(tableSorter);
@@ -135,73 +126,6 @@ public class TabelaCenovnikaDodatneUsluge extends JFrame {
 			}
 		});
 		
-		btnAdd.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
-
-				NapraviCenovnikDodatneUsluge ncd = new NapraviCenovnikDodatneUsluge(TabelaCenovnikaDodatneUsluge.this, factoryMng, null);
-				ncd.setVisible(true);
-			}
-		});
-		
-//		btnEdit.addActionListener(new ActionListener() {
-//			@Override
-//			public void actionPerformed(ActionEvent e) {
-//				int red = table.getSelectedRow();
-//				if(red == -1) {
-//					JOptionPane.showMessageDialog(null, "Morate odabrati red u tabeli.", "Greska", JOptionPane.WARNING_MESSAGE);
-//				}else {
-//					int id = (int) table.getValueAt(red, 0);
-//					Soba s = factoryMng.getSobaMng().IdToObject(id);
-//					if(s != null) {
-//						NapraviSobu ns = new NapraviSobu(TabelaSoba.this, factoryMng, s);
-//						ns.setVisible(true);
-//					}else {
-//						JOptionPane.showMessageDialog(null, "Nije moguce pronaci odabranu sobu!", "Greska", JOptionPane.ERROR_MESSAGE);
-//					}
-//				}
-//			}
-//		});
-		
-//		btnDelete.addActionListener(new ActionListener() {
-//			@Override
-//			public void actionPerformed(ActionEvent e) {
-//				int red = table.getSelectedRow();
-//				if(red == -1) {
-//					JOptionPane.showMessageDialog(null, "Morate odabrati red u tabeli.", "Greska", JOptionPane.WARNING_MESSAGE);
-//				}else {
-//					int id = (int) table.getValueAt(red, 0);
-//					Soba s = factoryMng.getSobaMng().IdToObject(id);
-//					if(s != null) {
-//						int izbor = JOptionPane.showConfirmDialog(null,"Da li ste sigurni da zelite da obrisete sobu?", 
-//								"Soba id " + String.valueOf(s.getId()) + " - Potvrda brisanja", JOptionPane.YES_NO_OPTION);
-//						if(izbor == JOptionPane.YES_OPTION) {
-//							factoryMng.getSobaMng().remove(s.getId());
-//							refreshData();
-//						}
-//					}else {
-//						JOptionPane.showMessageDialog(null, "Nije moguce pronaci odabranu sobu!", "Greska", JOptionPane.ERROR_MESSAGE);
-//					}
-//				}
-//			}
-//		});
-		
-		btnDetaljnije.addActionListener(new ActionListener() {
-			
-			@Override
-			public void actionPerformed(ActionEvent e) {
-				int red = table.getSelectedRow();
-				if(red == -1) {
-					JOptionPane.showMessageDialog(null, "Morate odabrati red u tabeli.", "Greska", JOptionPane.WARNING_MESSAGE);
-				}else {
-					String naziv = (String) table.getValueAt(red, 0);
-					CenovnikDodatneUsluge s = factoryMng.getCenovnikDodatneUslugeMng().NameToObject(naziv);
-					if(s != null) {
-						DetaljnaTabelaCenovnikaDodatneUsluge dctsm = new DetaljnaTabelaCenovnikaDodatneUsluge(factoryMng, s);
-						dctsm.setVisible(true);
-					}
-				}
-			}
-		});
 		
 	}
 
@@ -210,7 +134,7 @@ public class TabelaCenovnikaDodatneUsluge extends JFrame {
 	
 	// potrebno osvezavanje podataka u tabeli bez gasenja prozora
 	public void refreshData() {
-		CenovnikDodatneUslugeModel sm = (CenovnikDodatneUslugeModel)this.table.getModel();
+		SobaModel sm = (SobaModel)this.table.getModel();
 		sm.fireTableDataChanged();
 	}
 	
@@ -221,10 +145,10 @@ public class TabelaCenovnikaDodatneUsluge extends JFrame {
 // Manuelni sorter - potrebno za razumevanje rada podrazumevanog sortera tabele
 	protected void sort(int index) {
 		// index of table column
-		this.factoryMng.getCenovnikTipSobeMng().getCenovnici().sort(new Comparator<CenovnikTipSobe>() {
+		this.factoryMng.getSobaMng().getSobe().sort(new Comparator<Soba>() {
 			int retVal = 0;
 			@Override
-			public int compare(CenovnikTipSobe o1, CenovnikTipSobe o2) {
+			public int compare(Soba o1, Soba o2) {
 				switch (index) {
 				case 0:
 //					retVal = o1.getId().compareTo(o2.getId());

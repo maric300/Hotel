@@ -76,7 +76,6 @@ public class GostTabelaRezervacija extends JFrame {
 		setTitle("Rezervacije");
 		setContentPane(contentPane);
 		setLocationRelativeTo(null);		
-		setIconImage(new ImageIcon("img/icon.png").getImage());
 		
 		ImageIcon addIcon = new ImageIcon("img/add.png");		
 		ImageIcon scaled = new ImageIcon(addIcon.getImage().getScaledInstance(20, 20, Image.SCALE_SMOOTH));
@@ -164,15 +163,25 @@ public class GostTabelaRezervacija extends JFrame {
 					int id = (int) table.getValueAt(red, 0);
 					Rezervacija s = factoryMng.getRezervacijaMng().IdToObject(id);
 					if(s != null) {
-						int izbor = JOptionPane.showConfirmDialog(null,"Da li ste sigurni da zelite da otkazete rezervaciju? NAPOMENA: Nakon otkazane rezervacije pare se ne vracaju.", 
+						int izbor = JOptionPane.showConfirmDialog(null,"Da li ste sigurni da zelite da otkazete rezervaciju? NAPOMENA: Ako vam je rezervacija potvrdjena nakon otkazane rezervacije pare se ne vracaju.", 
 								"Rezervacija id " + String.valueOf(s.getId()) + " - Potvrda otkazivanja", JOptionPane.YES_NO_OPTION);
 						if(izbor == JOptionPane.YES_OPTION) {
-							factoryMng.getRezervacijaMng().IdToObject(s.getId()).setStatus(Status.OTKAZANA);
+							if (factoryMng.getRezervacijaMng().IdToObject(s.getId()).getStatus().equals(Status.POTVRDJENA)) {
+								factoryMng.getRezervacijaMng().IdToObject(s.getId()).setStatus(Status.OTKAZANA);
+							}
+							else if (factoryMng.getRezervacijaMng().IdToObject(s.getId()).getStatus().equals(Status.NA_CEKANJU) ) {
+								factoryMng.getRezervacijaMng().remove(s.getId());
+							}
+							else {
+								JOptionPane.showMessageDialog(null, "Status rezervacije nije 'NA_CEKANJU' ili 'POTVRDJENA'!", "Greska", JOptionPane.ERROR_MESSAGE);
+
+							}
+							
 							refreshData();
 							UpdateCena(emailGosta);
 						}
 					}else {
-						JOptionPane.showMessageDialog(null, "Nije moguce pronaci odabranu sobu!", "Greska", JOptionPane.ERROR_MESSAGE);
+						JOptionPane.showMessageDialog(null, "Nije moguce pronaci odabranu rezervaciju!", "Greska", JOptionPane.ERROR_MESSAGE);
 					}
 				}
 				

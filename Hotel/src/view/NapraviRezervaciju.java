@@ -28,6 +28,9 @@ import entity.Rezervacija;
 import entity.Rezervacija.Status;
 import manage.ManagerFactory;
 import net.miginfocom.swing.MigLayout;
+import viewTable.DetaljnaTabelaCenovnikaTipSobe;
+import viewTable.TabelaRezervacija;
+
 import java.awt.event.ActionListener;
 import java.text.SimpleDateFormat;
 import java.awt.event.ActionEvent;
@@ -272,7 +275,6 @@ public class NapraviRezervaciju extends JFrame {
 								    	ukupnaCena = ukupnaCena + tempCena;
 									}
 //									ukupnaCena = ukupnaCena + factoryMng.getCenovnikTipSobeMng().DateToInt(startDate, hmCenaTipSobe);
-									System.out.println(usluga.getNaziv() + "---" + startDate.toString() + "---" + String.valueOf(ukupnaCena));
 								}
 							}
 						}
@@ -291,6 +293,7 @@ public class NapraviRezervaciju extends JFrame {
 						
 						factoryMng.getRezervacijaMng().getRezervacije().add(new Rezervacija(id, status, ulogovaniGost.getEmail(), tipSobe, dodatnaUslugaList, checkInDateStr, checkOutdateStr, -1, ukupnaCena));
 					}
+					
 					dispose();
 				}
 			}
@@ -480,15 +483,7 @@ public class NapraviRezervaciju extends JFrame {
 				if (isOk == true) {
 					LocalDate ldIn = LocalDate.parse(checkInDateStr, DateTimeFormatter.ofPattern("dd.MM.uuuu."));
 					LocalDate ldOut = LocalDate.parse(checkOutdateStr, DateTimeFormatter.ofPattern("dd.MM.uuuu."));
-					if (ldIn.isAfter(ldOut)) {
-						lbError.setText("check-out datum mora biti nakon check-in datuma!");
-						isOk = false;
-					}
 					
-					if (LocalDate.now().isAfter(ldIn)) {
-						lbError.setText("check-in datum mora biti nakon danasnjeg datuma!");
-						isOk = false;
-					}
 					long opseg = ChronoUnit.DAYS.between(ldIn, ldOut);
 					CenovnikTipSobe cenovnik = factoryMng.getCenovnikTipSobeMng().NameToObject(tipSobe.getNaziv());
 					if (cenovnik != null) {
@@ -505,13 +500,14 @@ public class NapraviRezervaciju extends JFrame {
 				
 				if (isOk == true) {
 					
-					if (ulogovaniGost == null) {
+					if (editRez == null) {
 						factoryMng.getRezervacijaMng().getRezervacije().add(new Rezervacija(id, status, "admin", tipSobe, dodatnaUslugaList, checkInDateStr, checkOutdateStr, -1, ukupnaCena));
 					}
 					else {
 						
-						factoryMng.getRezervacijaMng().getRezervacije().add(new Rezervacija(id, status, ulogovaniGost.getEmail(), tipSobe, dodatnaUslugaList, checkInDateStr, checkOutdateStr, -1, ukupnaCena));
+						factoryMng.getRezervacijaMng().edit(editRez.getId(), editRez.getStatus(), editRez.getUsernameGosta(), tipSobe, dodatnaUslugaList, checkInDateStr, checkOutdateStr, editRez.getIdSobe(), ukupnaCena);
 					}
+					((TabelaRezervacija) parent) .refreshData();
 					dispose();
 				}
 			}
@@ -525,6 +521,7 @@ public class NapraviRezervaciju extends JFrame {
 			}
 		});
 		contentPane.add(btnOdustani, "span 2, gaptop 20px, alignx center");
+		pack();
 	}
 
 }

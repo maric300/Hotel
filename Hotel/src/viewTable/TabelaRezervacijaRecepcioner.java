@@ -86,7 +86,6 @@ public class TabelaRezervacijaRecepcioner extends JFrame {
 		setTitle("Rezervacije");
 		setContentPane(contentPane);
 		setLocationRelativeTo(null);		
-		setIconImage(new ImageIcon("img/icon.png").getImage());
 		
 		ImageIcon addIcon = new ImageIcon("img/add.png");		
 		ImageIcon scaled = new ImageIcon(addIcon.getImage().getScaledInstance(20, 20, Image.SCALE_SMOOTH));

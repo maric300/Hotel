@@ -14,6 +14,7 @@ import java.util.Map;
 import java.util.Scanner;
 
 import entity.CenovnikTipSobe;
+import entity.DodatnaUsluga;
 import entity.Gost;
 import entity.Osoba;
 import entity.Rezervacija;
@@ -150,6 +151,26 @@ public class RezervacijaManager {
 		}
 		return ukupnaCena;
 	}
+
+
+
+
+
+
+
+
+public void edit(int id,Status status,String usernameGosta,TipSobe tipSobe,List<DodatnaUsluga> dodatnaUslugaList,String checkInDateStr,String checkOutdateStr,int idSobe,int ukupnaCena){// TODO Auto-generated method stub
+	
+	Rezervacija r = this.IdToObject(id);
+	r.setUsernameGosta(usernameGosta);
+	r.setTipSobe(tipSobe);
+	r.setDodatnaUslugaList(dodatnaUslugaList);
+	r.setCheckInDateStr(checkInDateStr);
+	r.setCheckOutDateStr(checkOutdateStr);
+	r.setIdSobe(idSobe);
+	r.setStatus(status);
+	r.setUkupnaCena(ukupnaCena);
+}
 		
 	
 	
