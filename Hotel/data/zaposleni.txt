@@ -1,2 +1,3 @@
 zaposlen;SOBARICA;Milica;Teodosic;Zensko;07.10.1989.;Zeleznicka 2;064927123;milica123;milica123;3;5;60000
 zaposlen;RECEPCIONER;Dragica;Crnogorcevic;Zensko;05.07.1981.;Sindjeliceva 9;0645657878;dragica123;dragica123;4;9;87000
+zaposlen;SOBARICA;Ildika;Janos;Zensko;07.10.1989.;Zeleznicka 2;064927124;ildika@gmail.com;ildika123;3;5;60000

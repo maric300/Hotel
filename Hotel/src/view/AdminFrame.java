@@ -9,6 +9,9 @@ import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.border.EmptyBorder;
 
+import charts.ChartSobarice;
+import charts.ChartStatusRezervacija;
+import charts.ChartTipoviSoba;
 import entity.CenovnikTipSobe;
 import entity.Rezervacija;
 import entity.Rezervacija.Status;
@@ -314,7 +317,7 @@ public class AdminFrame extends JFrame {
 					
 					if (!hmSredjivanje.isEmpty()) {
 						for(String key : hmSredjivanje.keySet()) {
-							printer = key + " - broj ociscenjih soba: " + hmSredjivanje.get(key) + "\n";
+							printer += key + " - broj ociscenjih soba: " + hmSredjivanje.get(key) + "\n";
 						}
 						JOptionPane.showMessageDialog(null, printer, "Ciscenje soba", JOptionPane.INFORMATION_MESSAGE);
 					}
@@ -449,7 +452,7 @@ public class AdminFrame extends JFrame {
 					}
 					
 					for(SobaIzvestaj izvestaj : izvestajiSoba) {
-						printer = izvestaj.toString() + "\n";
+						printer += izvestaj.toString() + "\n";
 					}
 					JOptionPane.showMessageDialog(null, printer, "Prikaz soba", JOptionPane.INFORMATION_MESSAGE);
 
@@ -520,6 +523,48 @@ public class AdminFrame extends JFrame {
 		
 		JMenuItem mntmCenovnikDodatnihUsluga= new JMenuItem("Prikaži cenovnik dodatnih usluga");
 		mnPrikazi.add(mntmCenovnikDodatnihUsluga);
+		
+		JMenu mnGrafici = new JMenu("Grafici");
+		menuBar.add(mnGrafici);
+		
+		JMenuItem mntmGrafikTipovaSoba= new JMenuItem("Prikazi grafik tipova soba");
+		mnGrafici.add(mntmGrafikTipovaSoba);
+		
+		JMenuItem mntmGrafikSobarice= new JMenuItem("Prikazi grafik opterecenja sobarica");
+		mnGrafici.add(mntmGrafikSobarice);
+		
+		JMenuItem mntmGrafikRezervacija= new JMenuItem("Prikazi grafik statusa rezervacija");
+		mnGrafici.add(mntmGrafikRezervacija);
+		
+		mntmGrafikRezervacija.addActionListener(new ActionListener(){
+    
+      @Override
+      public void actionPerformed(ActionEvent e) {
+        ChartStatusRezervacija ctr = new ChartStatusRezervacija(factoryMng);
+        ctr.setVisible(true);
+        
+      }
+    });
+		
+		mntmGrafikSobarice.addActionListener(new ActionListener(){
+    
+      @Override
+      public void actionPerformed(ActionEvent e) {
+        ChartSobarice cs = new ChartSobarice(factoryMng);
+        cs.setVisible(true);
+        
+      }
+    });
+		
+		mntmGrafikTipovaSoba.addActionListener(new ActionListener(){
+    
+      @Override
+      public void actionPerformed(ActionEvent e) {
+        ChartTipoviSoba cts = new ChartTipoviSoba(factoryMng);
+        cts.setVisible(true);
+        
+      }
+    });
 		
 		mntmCenovnikDodatnihUsluga.addActionListener(new ActionListener() {
 			
