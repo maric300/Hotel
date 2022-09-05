@@ -77,18 +77,19 @@ public class NapraviTipSobe extends JFrame {
 			public void actionPerformed(ActionEvent e) {
 				String oldNaziv;
 				Boolean isOk = true;
-				if (!(tipSobeZaEdit == null)) {
+				if (tipSobeZaEdit != null) {
 					oldNaziv = tipSobeZaEdit.getNaziv();
 					
 				}
 				else {
 					oldNaziv = "";
 				}
-				
-				for (TipSobe tipSobe : factoryMng.getTipSobeMng().getTipoviSobe()) {
-					if (tipSobe.getNaziv().equals(tfTipSobe.getText())) {
-						isOk = false;
-						lbError.setText("Taj naziv vec postoji.");
+				if (!oldNaziv.equals(tfTipSobe.getText())) {
+					for (TipSobe tipSobe : factoryMng.getTipSobeMng().getTipoviSobe()) {
+						if (tipSobe.getNaziv().equals(tfTipSobe.getText())) {
+							isOk = false;
+							lbError.setText("Taj naziv vec postoji.");
+						}
 					}
 				}
 				

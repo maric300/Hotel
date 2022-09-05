@@ -1,8 +1,9 @@
-3216;NA_CEKANJU;maric300;jednokrevetna;dorucak;02.10.2022.;06.10.2022.;-1;9999
 9827;ODBIJENA;admin;jednokrevetna;dorucak:ručak:večera;04.11.2022.;08.11.2022.;-1;9999
 6674;POTVRDJENA;maric300;dvokrevetna;dorucak;03.10.2022.;11.10.2022.;-1;9999
-1723;NA_CEKANJU;maric300;dvokrevetna;ručak;05.10.2022.;08.10.2022.;-1;9999
+1723;OTKAZANA;maric300;dvokrevetna;ručak;05.10.2022.;08.10.2022.;-1;9999
 4916;NA_CEKANJU;maric300;dvokrevetna;večera;01.10.2022.;05.10.2022.;-1;9999
 1321;POTVRDJENA;maric300;dvokrevetna;bilijar:dorucak:večera;01.09.2022.;03.09.2022.;2;9999
-5230;NA_CEKANJU;maric300;dvokrevetna;;05.10.2022.;11.10.2022.;-1;30000
-35;NA_CEKANJU;maric300;jednokrevetna sa lezajem;večera;05.09.2022.;10.09.2022.;-1;20000
+5230;ODBIJENA;maric300;dvokrevetna;;05.10.2022.;11.10.2022.;-1;30000
+35;POTVRDJENA;maric300;jednokrevetna sa lezajem;večera;05.09.2022.;10.09.2022.;-1;20000
+653;POTVRDJENA;maric300;jednokrevetna;dorucak:ručak;10.09.2022.;14.09.2022.;-1;9800
+9570;NA_CEKANJU;maric300;jednokrevetna sa lezajem;dorucak:ručak:kuhinja;06.09.2022.;13.09.2022.;-1;31850

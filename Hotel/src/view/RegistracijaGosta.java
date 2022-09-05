@@ -6,6 +6,7 @@ import java.time.Year;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.regex.Pattern;
 import java.awt.EventQueue;
 
 import javax.swing.JFrame;
@@ -76,6 +77,7 @@ public class RegistracijaGosta extends JFrame {
 		else {
 			setTitle("Izmena gosta");
 		}
+		setResizable(false);
 		setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
 		setBounds(100, 100, 450, 354);
 		contentPane = new JPanel();
@@ -178,9 +180,45 @@ public class RegistracijaGosta extends JFrame {
 		btnOk.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				Boolean isOk = true;
-				String ime = tfIme.getText();
-				String prezime = tfPrezime.getText();
+				String ime = tfIme.getText().trim();
+				String prezime = tfPrezime.getText().trim();
 				String pol = null;
+				String adresa = tfAdresa.getText().trim();
+				String brojTelefona = tfBrTelefona.getText().trim();
+				String email = tfEmail.getText().trim();
+				String brPasosa = tfBrPasosa.getText().trim();
+				
+				if (ime.equals("")) {
+					isOk = false;
+					lbError.setText("Ime ne sme biti prazno!");
+				}
+				
+				if (prezime.equals("")) {
+					isOk = false;
+					lbError.setText("prezime ne sme biti prazno!");
+				}
+				
+				if (adresa.equals("")) {
+					isOk = false;
+					lbError.setText("polje adresa ne sme biti prazno!");
+				}
+				
+				if (brojTelefona.equals("")) {
+					isOk = false;
+					lbError.setText("polje brojTelefona ne sme biti prazno!");
+				}
+				
+				if (email.equals("")) {
+					isOk = false;
+					lbError.setText("polje email ne sme biti prazno!");
+				}
+				
+				if (brPasosa.equals("")) {
+					isOk = false;
+					lbError.setText("polje brPasosa ne sme biti prazno!");
+				}
+				
+				
 				if (rdbtnZenski.isSelected()) {
 					pol = "Zensko";
 				}
@@ -205,29 +243,26 @@ public class RegistracijaGosta extends JFrame {
 //					System.out.println("invalid");
 //				}
 				
-				String adresa = tfAdresa.getText();
-				String brojTelefona = tfBrTelefona.getText();
-				String email = tfEmail.getText();
-				String brPasosa = tfBrPasosa.getText();
-				
-				
-				if (ime.equals("")) {
-					lbError.setText("Ime ne sme biti prazno");
+				if (isValidEmailAddress(email)) {
+					
+				}
+				else {
 					isOk = false;
+					lbError.setText("Nije validan email");
 				}
 				
 				char[] chars = ime.toCharArray();
 				for(char c : chars) {
 					if (Character.isDigit(c)) {
 						isOk = false;
+						lbError.setText("Ime ne moze biti cifra!");
 						break;
 					}
 				}
 				
-				if (prezime.equals("")) {
-					lbError.setText("Prezime ne sme biti prazno");
-					isOk = false;
-				}
+			
+				
+
 				
 				try {
 				    SimpleDateFormat df = new java.text.SimpleDateFormat("dd.MM.yyyy.");
@@ -236,6 +271,16 @@ public class RegistracijaGosta extends JFrame {
 				} catch (java.text.ParseException e1) {
 				  lbError.setText("Neispravan datum");
 				  isOk = false;
+				}
+				
+				if(!isNumeric(brojTelefona)) {
+					isOk = false;
+					lbError.setText("Nevalidan broj telefona");
+				}
+				
+				if(!isNumeric(brPasosa)) {
+					isOk = false;
+					lbError.setText("Nevalidan broj pasosa");
 				}
 				
 				if (isOk.equals(true)) {
@@ -323,5 +368,21 @@ public class RegistracijaGosta extends JFrame {
 			tfBrPasosa.setText(gostZaEdit.getBrPasosa());
 		}
 		
+	}
+	
+	public boolean isValidEmailAddress(String email) {
+        String ePattern = "^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@((\\[[0-9]{1,3}\\.[0-9]{1,3}\\.[0-9]{1,3}\\.[0-9]{1,3}\\])|(([a-zA-Z\\-0-9]+\\.)+[a-zA-Z]{2,}))$";
+        java.util.regex.Pattern p = java.util.regex.Pattern.compile(ePattern);
+        java.util.regex.Matcher m = p.matcher(email);
+        return m.matches();
+ }
+	
+	public static boolean isNumeric(String str) { 
+		  try {  
+		    Integer.parseInt(str);  
+		    return true;
+		  } catch(NumberFormatException e){  
+		    return false;  
+		  }  
 	}
 }

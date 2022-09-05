@@ -32,6 +32,8 @@ public class CenovnikTipSobe {
 		this.cene = cene;
 	}
 	
+
+	
 	public String mapToString(Map<LocalDate, Integer> mapa) {
 		String str = "";
 		for (Entry<LocalDate, Integer> entry : mapa.entrySet()) {

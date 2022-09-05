@@ -8,6 +8,7 @@ import java.io.IOException;
 import java.io.PrintWriter;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
+import java.time.temporal.ChronoUnit;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -67,10 +68,37 @@ public class CenovnikTipSobeManager {
 				latest = datum;
 			}
 		}
-		System.out.println(latest.toString());
 		return latest;
 	}
-
+	
+	
+	public String getDatumString(LocalDate datum) {
+		String formattedDate = datum.format(DateTimeFormatter.ofPattern("dd.MM.yyyy."));
+		return formattedDate;
+	}
+	
+	
+	public int DateToInt(LocalDate datum, Map<LocalDate, Integer> mapa) {
+		Boolean isOk = false;
+		LocalDate currentDate = LocalDate.now();
+		long opseg = 1000;
+		long minOpseg = 1000;
+		for (LocalDate datumInFor : mapa.keySet()) {
+			opseg = ChronoUnit.DAYS.between(datum, currentDate);
+			if (datum.isAfter(datumInFor) && opseg < minOpseg) {
+				currentDate = datumInFor;
+				minOpseg = opseg;
+				isOk = true;
+			}
+		}
+		if (isOk.equals(true)) {
+			return mapa.get(currentDate);
+		}
+		else {
+			return 0;
+		}
+		
+	}
 
 
 	public boolean loadData() {

@@ -179,6 +179,7 @@ public class SobaricaFrame extends JFrame {
 						factoryMng.getSredjivanjeMng().getSredjivanjeSobaLista().add(new SredjivanjeSoba(DanasStr, sobarica.getEmail(), brojCiscenja));
 					}
 					sobaCiscenja.setStatus(StatusSobe.SLOBODNA);
+					sobaCiscenja.setEmailSobarice("");
 					refreshData();
 				}
 				

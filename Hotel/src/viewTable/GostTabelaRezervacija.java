@@ -37,6 +37,7 @@ import entity.Gost;
 import entity.Rezervacija;
 import entity.Soba;
 import entity.Zaposlen;
+import entity.Rezervacija.Status;
 import manage.GostManager;
 import manage.ManagerFactory;
 import model.GostModel;
@@ -61,6 +62,7 @@ public class GostTabelaRezervacija extends JFrame {
 	protected TableRowSorter<AbstractTableModel> tableSorter = new TableRowSorter<AbstractTableModel>();
 	protected JTable table;
 	
+	protected JButton btnOtkazi = new JButton("Otkaži");
 	protected JLabel lbTroskovi = new JLabel(" ");
 	protected JLabel lbTroskoviTekst = new JLabel("Ukupni troškovi: ");
 
@@ -79,24 +81,22 @@ public class GostTabelaRezervacija extends JFrame {
 		ImageIcon addIcon = new ImageIcon("img/add.png");		
 		ImageIcon scaled = new ImageIcon(addIcon.getImage().getScaledInstance(20, 20, Image.SCALE_SMOOTH));
 		addIcon = scaled;
-		btnAdd.setIcon(addIcon);
-		mainToolbar.add(btnAdd);
-		ImageIcon editIcon = new ImageIcon("img/edit.gif");
-		btnEdit.setIcon(editIcon);
-		mainToolbar.add(btnEdit);
-		ImageIcon deleteIcon = new ImageIcon("img/remove.gif");
-		btnDelete.setIcon(deleteIcon);
-		mainToolbar.add(btnDelete);
+		mainToolbar.add(btnOtkazi);
 		mainToolbar.setFloatable(false);
 		mainToolbar.add(Box.createHorizontalGlue());
 		mainToolbar.add(lbTroskoviTekst);
 		mainToolbar.add(lbTroskovi);
+		lbTroskovi.setToolTipText("Uračunate su samo potvrjđene i otkazane rezervacije.");
 		add(mainToolbar, BorderLayout.NORTH);
-		int cena = 0;
-		for(Rezervacija rezervacija : factoryMng.getRezervacijaMng().getRezervacijeGosta(emailGosta)) {
-			cena = cena + rezervacija.getUkupnaCena();
-		}
-		lbTroskovi.setText(String.valueOf(cena));
+//		int cena = 0;
+//		for(Rezervacija rezervacija : factoryMng.getRezervacijaMng().getRezervacijeGosta(emailGosta)) {
+//			if (rezervacija.getStatus().equals(Status.POTVRDJENA) || rezervacija.getStatus().equals(Status.OTKAZANA)) {
+//				cena = cena + rezervacija.getUkupnaCena();
+//			}
+//			
+//		}
+//		lbTroskovi.setText(String.valueOf(cena));
+		UpdateCena(emailGosta);
 		
 		GostRezervacijaModel mdl = new GostRezervacijaModel(factoryMng.getRezervacijaMng(), emailGosta);
 		table = new JTable(mdl);
@@ -153,6 +153,43 @@ public class GostTabelaRezervacija extends JFrame {
 			}
 		});	
 		
+		btnOtkazi.addActionListener(new ActionListener() {
+			
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				int red = table.getSelectedRow();
+				if(red == -1) {
+					JOptionPane.showMessageDialog(null, "Morate odabrati red u tabeli.", "Greska", JOptionPane.WARNING_MESSAGE);
+				}else {
+					int id = (int) table.getValueAt(red, 0);
+					Rezervacija s = factoryMng.getRezervacijaMng().IdToObject(id);
+					if(s != null) {
+						int izbor = JOptionPane.showConfirmDialog(null,"Da li ste sigurni da zelite da otkazete rezervaciju? NAPOMENA: Nakon otkazane rezervacije pare se ne vracaju.", 
+								"Rezervacija id " + String.valueOf(s.getId()) + " - Potvrda otkazivanja", JOptionPane.YES_NO_OPTION);
+						if(izbor == JOptionPane.YES_OPTION) {
+							factoryMng.getRezervacijaMng().IdToObject(s.getId()).setStatus(Status.OTKAZANA);
+							refreshData();
+							UpdateCena(emailGosta);
+						}
+					}else {
+						JOptionPane.showMessageDialog(null, "Nije moguce pronaci odabranu sobu!", "Greska", JOptionPane.ERROR_MESSAGE);
+					}
+				}
+				
+			}
+		});
+		
+	}
+	
+	public void UpdateCena(String emailGosta) {
+		int cena = 0;
+		for(Rezervacija rezervacija : factoryMng.getRezervacijaMng().getRezervacijeGosta(emailGosta)) {
+			if (rezervacija.getStatus().equals(Status.POTVRDJENA) || rezervacija.getStatus().equals(Status.OTKAZANA)) {
+				cena = cena + rezervacija.getUkupnaCena();
+			}
+			
+		}
+		lbTroskovi.setText(String.valueOf(cena));
 	}
 
 	
@@ -202,6 +239,8 @@ public class GostTabelaRezervacija extends JFrame {
 		refreshData();	
 		
 	}
+	
+	
 	
 
 	

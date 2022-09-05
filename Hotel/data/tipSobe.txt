@@ -1,3 +1,4 @@
 1;jednokrevetna;2000
 2;dvokrevetna;4800
 2;jednokrevetna sa lezajem;4000
+4;cetvorokrevetna;9000

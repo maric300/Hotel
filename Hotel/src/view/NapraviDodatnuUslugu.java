@@ -82,11 +82,13 @@ public class NapraviDodatnuUslugu extends JFrame {
 					oldNaziv = "";
 				}
 				
-				if (!oldNaziv.equals(tfDodatnaUsluga.getText().toString()))
-				for (DodatnaUsluga dodatnaUsluga: factoryMng.getUslugaMng().getDodatneUsluge()) {
-					if (dodatnaUsluga.getNaziv().equals(tfDodatnaUsluga.getText())) {
-						isOk = false;
-						lbError.setText("Taj naziv vec postoji.");
+				if (!oldNaziv.equals(tfDodatnaUsluga.getText().toString())) {
+					for (DodatnaUsluga dodatnaUsluga: factoryMng.getUslugaMng().getDodatneUsluge()) {
+						if (dodatnaUsluga.getNaziv().equals(tfDodatnaUsluga.getText())) {
+							isOk = false;
+							lbError.setText("Taj naziv vec postoji.");
+							
+						}
 					}
 				}
 				

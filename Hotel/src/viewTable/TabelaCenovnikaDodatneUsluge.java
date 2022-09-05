@@ -33,21 +33,24 @@ import javax.swing.event.DocumentListener;
 import javax.swing.table.AbstractTableModel;
 import javax.swing.table.TableRowSorter;
 
+import entity.CenovnikDodatneUsluge;
 import entity.CenovnikTipSobe;
 import entity.Gost;
 import entity.Soba;
 import entity.Zaposlen;
 import manage.GostManager;
 import manage.ManagerFactory;
+import model.CenovnikDodatneUslugeModel;
 import model.CenovnikTipSobeModel;
 import model.DetaljanCenovnikTipSobeModel;
 import model.GostModel;
 import model.SobaModel;
+import view.NapraviCenovnikDodatneUsluge;
 import view.NapraviCenovnikTipSobe;
 import view.NapraviSobu;
 import view.RegistracijaZaposlenog;
 
-public class TabelaCenovnikaTipaSobe extends JFrame {
+public class TabelaCenovnikaDodatneUsluge extends JFrame {
 
 	private JPanel contentPane;
 	
@@ -62,14 +65,14 @@ public class TabelaCenovnikaTipaSobe extends JFrame {
 	protected JTable table;
 	protected JButton btnDetaljnije = new JButton("Detaljnije");
 
-	public TabelaCenovnikaTipaSobe(ManagerFactory factoryMng) {
+	public TabelaCenovnikaDodatneUsluge(ManagerFactory factoryMng) {
 		this.factoryMng = factoryMng;
 		setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
 		setBounds(100, 100, 450, 300);
 		contentPane = new JPanel();
 		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
 		contentPane.setLayout(new BorderLayout(0, 0));
-		setTitle("Cenovnik tipova soba");
+		setTitle("Cenovnik dodatnih usluga");
 		setContentPane(contentPane);
 		setLocationRelativeTo(null);		
 		setIconImage(new ImageIcon("img/icon.png").getImage());
@@ -91,12 +94,12 @@ public class TabelaCenovnikaTipaSobe extends JFrame {
 		add(mainToolbar, BorderLayout.NORTH);
 		
 		
-		CenovnikTipSobeModel mdl = new CenovnikTipSobeModel(factoryMng.getCenovnikTipSobeMng(), factoryMng.getTipSobeMng());
+		CenovnikDodatneUslugeModel mdl = new CenovnikDodatneUslugeModel(factoryMng.getCenovnikDodatneUslugeMng(), factoryMng.getUslugaMng());
 		table = new JTable(mdl);
 		table.getSelectionModel().setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
 		table.getTableHeader().setReorderingAllowed(false);
 		// podesavanje manuelnog sortera tabele, potrebno i za pretragu
-		if (factoryMng.getCenovnikTipSobeMng().getCenovnici().size() != 0) {
+		if (factoryMng.getCenovnikDodatneUslugeMng().getCenovnici().size() != 0) {
 			tableSorter.setModel((AbstractTableModel) table.getModel());
 		}
 		table.setRowSorter(tableSorter);
@@ -149,8 +152,8 @@ public class TabelaCenovnikaTipaSobe extends JFrame {
 		btnAdd.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 
-				NapraviCenovnikTipSobe nct = new NapraviCenovnikTipSobe(null, factoryMng, null);
-				nct.setVisible(true);
+				NapraviCenovnikDodatneUsluge ncd = new NapraviCenovnikDodatneUsluge(TabelaCenovnikaDodatneUsluge.this, factoryMng, null);
+				ncd.setVisible(true);
 			}
 		});
 		
@@ -205,9 +208,9 @@ public class TabelaCenovnikaTipaSobe extends JFrame {
 					JOptionPane.showMessageDialog(null, "Morate odabrati red u tabeli.", "Greska", JOptionPane.WARNING_MESSAGE);
 				}else {
 					String naziv = (String) table.getValueAt(red, 0);
-					CenovnikTipSobe s = factoryMng.getCenovnikTipSobeMng().NameToObject(naziv);
+					CenovnikDodatneUsluge s = factoryMng.getCenovnikDodatneUslugeMng().NameToObject(naziv);
 					if(s != null) {
-						DetaljnaTabelaCenovnikaTipSobe dctsm = new DetaljnaTabelaCenovnikaTipSobe(factoryMng, s);
+						DetaljnaTabelaCenovnikaDodatneUsluge dctsm = new DetaljnaTabelaCenovnikaDodatneUsluge(factoryMng, s);
 						dctsm.setVisible(true);
 					}
 				}
@@ -221,7 +224,7 @@ public class TabelaCenovnikaTipaSobe extends JFrame {
 	
 	// potrebno osvezavanje podataka u tabeli bez gasenja prozora
 	public void refreshData() {
-		CenovnikTipSobeModel sm = (CenovnikTipSobeModel)this.table.getModel();
+		CenovnikDodatneUslugeModel sm = (CenovnikDodatneUslugeModel)this.table.getModel();
 		sm.fireTableDataChanged();
 	}
 	

@@ -8,13 +8,14 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import javax.swing.Box;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JFrame;
@@ -34,6 +35,7 @@ import javax.swing.table.AbstractTableModel;
 import javax.swing.table.TableRowSorter;
 
 import entity.CenovnikTipSobe;
+import entity.DatumICena;
 import entity.Gost;
 import entity.Soba;
 import entity.Zaposlen;
@@ -47,11 +49,12 @@ import view.NapraviCenovnikTipSobe;
 import view.NapraviSobu;
 import view.RegistracijaZaposlenog;
 
-public class TabelaCenovnikaTipaSobe extends JFrame {
+public class DetaljnaTabelaCenovnikaTipSobe extends JFrame {
 
 	private JPanel contentPane;
 	
 	private ManagerFactory factoryMng;
+	private CenovnikTipSobe trenutniCenovnik;
 
 	protected JToolBar mainToolbar = new JToolBar();
 	protected JButton btnAdd = new JButton();
@@ -60,10 +63,10 @@ public class TabelaCenovnikaTipaSobe extends JFrame {
 	protected JTextField tfSearch = new JTextField(20);
 	protected TableRowSorter<AbstractTableModel> tableSorter = new TableRowSorter<AbstractTableModel>();
 	protected JTable table;
-	protected JButton btnDetaljnije = new JButton("Detaljnije");
 
-	public TabelaCenovnikaTipaSobe(ManagerFactory factoryMng) {
+	public DetaljnaTabelaCenovnikaTipSobe(ManagerFactory factoryMng, CenovnikTipSobe trenutniCenovnik) {
 		this.factoryMng = factoryMng;
+		this.trenutniCenovnik = trenutniCenovnik;
 		setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
 		setBounds(100, 100, 450, 300);
 		contentPane = new JPanel();
@@ -85,18 +88,20 @@ public class TabelaCenovnikaTipaSobe extends JFrame {
 		ImageIcon deleteIcon = new ImageIcon("img/remove.gif");
 		btnDelete.setIcon(deleteIcon);
 		mainToolbar.add(btnDelete);
-		mainToolbar.add(Box.createHorizontalGlue());
-		mainToolbar.add(btnDetaljnije);
 		mainToolbar.setFloatable(false);		
 		add(mainToolbar, BorderLayout.NORTH);
 		
 		
-		CenovnikTipSobeModel mdl = new CenovnikTipSobeModel(factoryMng.getCenovnikTipSobeMng(), factoryMng.getTipSobeMng());
+		List<DatumICena> datumiICene = new ArrayList<DatumICena>();
+		for (LocalDate datum : trenutniCenovnik.getCene().keySet()) {
+			datumiICene.add(new DatumICena(datum, trenutniCenovnik.getCene().get(datum)));
+		}
+		DetaljanCenovnikTipSobeModel mdl = new DetaljanCenovnikTipSobeModel(datumiICene);
 		table = new JTable(mdl);
 		table.getSelectionModel().setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
 		table.getTableHeader().setReorderingAllowed(false);
 		// podesavanje manuelnog sortera tabele, potrebno i za pretragu
-		if (factoryMng.getCenovnikTipSobeMng().getCenovnici().size() != 0) {
+		if (datumiICene.size() != 0) {
 			tableSorter.setModel((AbstractTableModel) table.getModel());
 		}
 		table.setRowSorter(tableSorter);
@@ -154,61 +159,36 @@ public class TabelaCenovnikaTipaSobe extends JFrame {
 			}
 		});
 		
-//		btnEdit.addActionListener(new ActionListener() {
-//			@Override
-//			public void actionPerformed(ActionEvent e) {
-//				int red = table.getSelectedRow();
-//				if(red == -1) {
-//					JOptionPane.showMessageDialog(null, "Morate odabrati red u tabeli.", "Greska", JOptionPane.WARNING_MESSAGE);
-//				}else {
-//					int id = (int) table.getValueAt(red, 0);
-//					Soba s = factoryMng.getSobaMng().IdToObject(id);
-//					if(s != null) {
-//						NapraviSobu ns = new NapraviSobu(TabelaSoba.this, factoryMng, s);
-//						ns.setVisible(true);
-//					}else {
-//						JOptionPane.showMessageDialog(null, "Nije moguce pronaci odabranu sobu!", "Greska", JOptionPane.ERROR_MESSAGE);
-//					}
-//				}
-//			}
-//		});
-		
-//		btnDelete.addActionListener(new ActionListener() {
-//			@Override
-//			public void actionPerformed(ActionEvent e) {
-//				int red = table.getSelectedRow();
-//				if(red == -1) {
-//					JOptionPane.showMessageDialog(null, "Morate odabrati red u tabeli.", "Greska", JOptionPane.WARNING_MESSAGE);
-//				}else {
-//					int id = (int) table.getValueAt(red, 0);
-//					Soba s = factoryMng.getSobaMng().IdToObject(id);
-//					if(s != null) {
-//						int izbor = JOptionPane.showConfirmDialog(null,"Da li ste sigurni da zelite da obrisete sobu?", 
-//								"Soba id " + String.valueOf(s.getId()) + " - Potvrda brisanja", JOptionPane.YES_NO_OPTION);
-//						if(izbor == JOptionPane.YES_OPTION) {
-//							factoryMng.getSobaMng().remove(s.getId());
-//							refreshData();
-//						}
-//					}else {
-//						JOptionPane.showMessageDialog(null, "Nije moguce pronaci odabranu sobu!", "Greska", JOptionPane.ERROR_MESSAGE);
-//					}
-//				}
-//			}
-//		});
-		
-		btnDetaljnije.addActionListener(new ActionListener() {
-			
+		btnEdit.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				int red = table.getSelectedRow();
 				if(red == -1) {
 					JOptionPane.showMessageDialog(null, "Morate odabrati red u tabeli.", "Greska", JOptionPane.WARNING_MESSAGE);
 				}else {
-					String naziv = (String) table.getValueAt(red, 0);
-					CenovnikTipSobe s = factoryMng.getCenovnikTipSobeMng().NameToObject(naziv);
-					if(s != null) {
-						DetaljnaTabelaCenovnikaTipSobe dctsm = new DetaljnaTabelaCenovnikaTipSobe(factoryMng, s);
-						dctsm.setVisible(true);
+					LocalDate datum = LocalDate.parse(table.getValueAt(red, 0).toString(), DateTimeFormatter.ofPattern("dd.MM.uuuu."));
+					NapraviCenovnikTipSobe nct = new NapraviCenovnikTipSobe(DetaljnaTabelaCenovnikaTipSobe.this, factoryMng, datum, trenutniCenovnik);
+					nct.setVisible(true);
+				}
+			}
+		});
+		
+		btnDelete.addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				int red = table.getSelectedRow();
+				if(red == -1) {
+					JOptionPane.showMessageDialog(null, "Morate odabrati red u tabeli.", "Greska", JOptionPane.WARNING_MESSAGE);
+				}else {
+					LocalDate datum = LocalDate.parse(table.getValueAt(red, 0).toString(), DateTimeFormatter.ofPattern("dd.MM.uuuu."));
+					if(datum != null) {
+						int izbor = JOptionPane.showConfirmDialog(null,"Da li ste sigurni da zelite da obrisete cenovnik?", 
+								"Potvrda brisanja", JOptionPane.YES_NO_OPTION);
+						if(izbor == JOptionPane.YES_OPTION) {
+							trenutniCenovnik.getCene().remove(datum);
+						}
+					}else {
+						JOptionPane.showMessageDialog(null, "Nije moguce pronaci odabranu sobu!", "Greska", JOptionPane.ERROR_MESSAGE);
 					}
 				}
 			}
@@ -221,7 +201,7 @@ public class TabelaCenovnikaTipaSobe extends JFrame {
 	
 	// potrebno osvezavanje podataka u tabeli bez gasenja prozora
 	public void refreshData() {
-		CenovnikTipSobeModel sm = (CenovnikTipSobeModel)this.table.getModel();
+		DetaljanCenovnikTipSobeModel sm = (DetaljanCenovnikTipSobeModel)this.table.getModel();
 		sm.fireTableDataChanged();
 	}
 	

@@ -7,6 +7,7 @@ import javax.swing.border.EmptyBorder;
 
 import manage.ManagerFactory;
 import model.GostModel;
+import viewTable.TabelaCenovnikaDodatneUsluge;
 import viewTable.TabelaCenovnikaTipaSobe;
 import viewTable.TabelaDodatnihUsluga;
 import viewTable.TabelaRezervacija;
@@ -124,6 +125,16 @@ public class AdminFrame extends JFrame {
 		
 		JMenuItem mntmCenovnikDodatnihUsluga= new JMenuItem("Prikaži cenovnik dodatnih usluga");
 		mnPrikazi.add(mntmCenovnikDodatnihUsluga);
+		
+		mntmCenovnikDodatnihUsluga.addActionListener(new ActionListener() {
+			
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				TabelaCenovnikaDodatneUsluge tcd = new TabelaCenovnikaDodatneUsluge(factoryMng);
+				tcd.setVisible(true);
+				
+			}
+		});
 		
 		mntmDodatneUsluge.addActionListener(new ActionListener() {
 			

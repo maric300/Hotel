@@ -9,6 +9,7 @@ import java.util.Map;
 import javax.swing.table.AbstractTableModel;
 
 import entity.CenovnikTipSobe;
+import entity.DatumICena;
 import entity.Gost;
 import entity.Soba;
 import entity.Soba.StatusSobe;
@@ -18,21 +19,16 @@ import manage.TipSobeManager;
 
 public class DetaljanCenovnikTipSobeModel extends AbstractTableModel {
 	private static final long serialVersionUID = 173122351138550735L;
-	private CenovnikTipSobeManager mng;
-	private TipSobeManager tipSobeMng;
-	private Map<LocalDate, Integer> mapa;
+	private List<DatumICena> datumiICene;
 	private String[] columnNames = { "Datum", "Cena"};
 
-	public DetaljanCenovnikTipSobeModel(CenovnikTipSobeManager mng, TipSobeManager tipSobeMng, Map<LocalDate, Integer> mapa) {
-		this.mng = mng;
-		this.tipSobeMng = tipSobeMng;
-		this.mapa = mapa;
-				
+	public DetaljanCenovnikTipSobeModel(List<DatumICena> datumiICene) {
+		this.datumiICene = datumiICene;
 	}
 
 	@Override
 	public int getRowCount() {
-		return mapa.size();
+		return datumiICene.size();
 	}
 
 	@Override
@@ -43,13 +39,13 @@ public class DetaljanCenovnikTipSobeModel extends AbstractTableModel {
 	@Override
 	public Object getValueAt(int rowIndex, int columnIndex) {
 		
-		if (mng.getCenovnici().size() != 0) {
-			String formattedDate = datum.format(DateTimeFormatter.ofPattern("dd.MMM.yyyy."));
+		if (datumiICene.size() != 0) {
+		DatumICena s = datumiICene.get(rowIndex);
 			switch (columnIndex) {
 			case 0:
-				return formattedDate;
+				return s.getDatumString();
 			case 1:
-				return aktuelnaCena;
+				return s.getCena();
 			default:
 				return null;
 			}

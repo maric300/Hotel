@@ -143,29 +143,29 @@ public class TabelaRezervacija extends JFrame {
 		btnAdd.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 
-				NapraviRezervaciju ns = new NapraviRezervaciju(factoryMng, null);
+				NapraviRezervaciju ns = new NapraviRezervaciju(TabelaRezervacija.this, factoryMng, null);
 				ns.setVisible(true);
 			}
 		});
 		
-//		btnEdit.addActionListener(new ActionListener() {
-//			@Override
-//			public void actionPerformed(ActionEvent e) {
-//				int red = table.getSelectedRow();
-//				if(red == -1) {
-//					JOptionPane.showMessageDialog(null, "Morate odabrati red u tabeli.", "Greska", JOptionPane.WARNING_MESSAGE);
-//				}else {
-//					int id = (int) table.getValueAt(red, 0);
-//					Rezervacija s = factoryMng.getRezervacijaMng().IdToObject(id);
-//					if(s != null) {
-//						NapraviSobu ns = new NapraviRezervaciju(TabelaRezervacija.this, factoryMng, s);
-//						ns.setVisible(true);
-//					}else {
-//						JOptionPane.showMessageDialog(null, "Nije moguce pronaci odabranu sobu!", "Greska", JOptionPane.ERROR_MESSAGE);
-//					}
-//				}
-//			}
-//		});
+		btnEdit.addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				int red = table.getSelectedRow();
+				if(red == -1) {
+					JOptionPane.showMessageDialog(null, "Morate odabrati red u tabeli.", "Greska", JOptionPane.WARNING_MESSAGE);
+				}else {
+					int id = (int) table.getValueAt(red, 0);
+					Rezervacija s = factoryMng.getRezervacijaMng().IdToObject(id);
+					if(s != null) {
+						NapraviRezervaciju ns = new NapraviRezervaciju(TabelaRezervacija.this, factoryMng, s);
+						ns.setVisible(true);
+					}else {
+						JOptionPane.showMessageDialog(null, "Nije moguce pronaci odabranu rezervaciju!", "Greska", JOptionPane.ERROR_MESSAGE);
+					}
+				}
+			}
+		});
 		
 		btnDelete.addActionListener(new ActionListener() {
 			@Override

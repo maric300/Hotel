@@ -8,9 +8,6 @@ import java.text.SimpleDateFormat;
 import java.time.LocalDate;
 import java.time.Year;
 import java.time.format.DateTimeFormatter;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
 
 import javax.swing.JButton;
 import javax.swing.JComboBox;
@@ -20,18 +17,13 @@ import javax.swing.JTextField;
 
 import entity.CenovnikDodatneUsluge;
 import entity.CenovnikTipSobe;
-import entity.DodatnaUsluga;
-import entity.Soba;
-import entity.TipSobe;
 import manage.ManagerFactory;
 import net.miginfocom.swing.MigLayout;
 import viewTable.DetaljnaTabelaCenovnikaDodatneUsluge;
 import viewTable.DetaljnaTabelaCenovnikaTipSobe;
-import viewTable.TabelaCenovnikaDodatneUsluge;
-import viewTable.TabelaSoba;
-import viewTable.TabelaTipovaSoba;
 
-public class NapraviCenovnikDodatneUsluge extends JFrame {
+public class NapraviDetaljanCenovnikDodatneUsluge extends JFrame{
+	
 	private JLabel lbDodatnaUsluga = new JLabel("Dodatna usluga");
 	private JComboBox comboBoxDodatnaUsluga;
 	private JLabel lbCena = new JLabel("Cena po nocenju");
@@ -41,15 +33,15 @@ public class NapraviCenovnikDodatneUsluge extends JFrame {
 	private JButton btnOk = new JButton("OK");
 	private JButton btnCancel = new JButton("Cancel");
 	
-	private CenovnikDodatneUsluge editUsluga;
-	
-	public NapraviCenovnikDodatneUsluge (JFrame parent, ManagerFactory factoryMng, CenovnikDodatneUsluge editUsluga) {
-		this.editUsluga = editUsluga;
-		if (editUsluga != null) {
-			setTitle("Izmena cenovnika tipa sobe");
+	private CenovnikDodatneUsluge trenutniCenovnik;
+
+public NapraviDetaljanCenovnikDodatneUsluge (JFrame parent, ManagerFactory factoryMng, LocalDate datum, CenovnikDodatneUsluge trenutniCenovnik) {
+		this.trenutniCenovnik = trenutniCenovnik;
+		if (datum == null) {
+			setTitle("Napravi cenovnik");
 		}
 		else {
-			setTitle("Dodavanje cenovnika tipa sobe");
+			setTitle("Izmena cenovnika");
 		}
 		
 		setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
@@ -58,16 +50,6 @@ public class NapraviCenovnikDodatneUsluge extends JFrame {
 		
 		MigLayout ml = new MigLayout("wrap, fill", "[][][][]", "[][][][][]");
 		setLayout(ml);
-		
-		add(lbDodatnaUsluga);
-		
-		List<DodatnaUsluga> dodatneUsluge = factoryMng.getUslugaMng().getDodatneUsluge();
-		String[] s1 = new String[dodatneUsluge.size()];
-		for (int i = 0; i < dodatneUsluge.size(); i++) {
-			s1[i] = dodatneUsluge.get(i).getNaziv();
-		}
-		comboBoxDodatnaUsluga = new JComboBox(s1);
-		add(comboBoxDodatnaUsluga, "span 3");
 		
 		add(lbDatum);
 		
@@ -121,20 +103,21 @@ public class NapraviCenovnikDodatneUsluge extends JFrame {
 		add(btnCancel, "span 2");
 		btnCancel.setSize(40, 20);
 		
+		if (datum != null) {
+			tfCena.setText(String.valueOf(trenutniCenovnik.getCene().get(datum)));
+			choiceDay.select(datum.getDayOfMonth() - 1);
+			choiceMonth.select(datum.getMonthValue() - 1);
+			choiceYear.select(String.valueOf(datum.getYear()));
+		}
+		
 		btnOk.addActionListener(new ActionListener() {
 			
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				Boolean isOk = true;
+				String oldDatumStr = factoryMng.getCenovnikTipSobeMng().getDatumString(datum);
 				String datumStr = choiceDay.getSelectedItem() + "." + choiceMonth.getSelectedItem() + "." + choiceYear.getSelectedItem() + ".";
-				
 
-				
-				if (comboBoxDodatnaUsluga.getSelectedIndex() == -1) {
-					isOk = false;
-					lbError.setText("Morate izabrati dodatnu uslugu!");
-				}
-				
 				try {
 				    SimpleDateFormat df = new java.text.SimpleDateFormat("dd.MM.yyyy.");
 				    df.setLenient(false);
@@ -144,22 +127,19 @@ public class NapraviCenovnikDodatneUsluge extends JFrame {
 				  isOk = false;
 				}
 				
-				if (isOk.equals(true)) {
+				if (isOk.equals(true) && !oldDatumStr.equals(datumStr)) {
 					LocalDate ldD = LocalDate.parse(datumStr, DateTimeFormatter.ofPattern("dd.MM.uuuu."));
-					for (CenovnikDodatneUsluge cenovnik : factoryMng.getCenovnikDodatneUslugeMng().getCenovnici()) {
-						if (cenovnik.getNaziv().equals(comboBoxDodatnaUsluga.getSelectedItem().toString())) {
-							for (LocalDate ldf : cenovnik.getCene().keySet()) {
-								if (ldf.equals(ldD)) {
-									isOk = false;
-									lbError.setText("Vec postoji cenovnik sa tim datumom.");
-								}
-							}
+					for (LocalDate ldf : trenutniCenovnik.getCene().keySet()) {
+						if (ldf.equals(ldD)) {
+							isOk = false;
+							lbError.setText("Vec postoji cenovnik sa tim datumom.");
+
 						}
 					}
-					if (LocalDate.now().isAfter(ldD)) {
-						isOk = false;
-						lbError.setText("Novi cenovnik moze da vazi najranije od sutra.");
-					}
+//					if (LocalDate.now().isAfter(ldD)) {
+//						isOk = false;
+//						lbError.setText("Novi cenovnik moze da vazi najranije od sutra.");
+//					}
 				}
 				
 				if (tfCena.getText().matches("-?\\d+(\\.\\d+)?")) {
@@ -176,33 +156,29 @@ public class NapraviCenovnikDodatneUsluge extends JFrame {
 				if (isOk.equals(true)) {
 					LocalDate ldDatum = LocalDate.parse(datumStr, DateTimeFormatter.ofPattern("dd.MM.uuuu."));
 
-					if (editUsluga == null) {
-						CenovnikDodatneUsluge cenovnik = factoryMng.getCenovnikDodatneUslugeMng().NameToObject(comboBoxDodatnaUsluga.getSelectedItem().toString());
-						if (cenovnik != null) {
-							cenovnik.getCene().put(ldDatum, Integer.parseInt(tfCena.getText().toString()) );
-						}
-						else {
-							Map<LocalDate, Integer> mapa = new HashMap<LocalDate, Integer>();
-							mapa.put(ldDatum, Integer.parseInt(tfCena.getText().toString()));
-							factoryMng.getCenovnikDodatneUslugeMng().getCenovnici().add(new CenovnikDodatneUsluge(comboBoxDodatnaUsluga.getSelectedItem().toString(), mapa));
-						}
+					if (datum != null) {
+						CenovnikDodatneUsluge cenovnik1 = factoryMng.getCenovnikDodatneUslugeMng().NameToObject(trenutniCenovnik.getNaziv());
+						cenovnik1.getCene().remove(datum);
+						cenovnik1.getCene().put(ldDatum, Integer.parseInt(tfCena.getText()));
+					}
+					else {
+						CenovnikDodatneUsluge cenovnik1 = factoryMng.getCenovnikDodatneUslugeMng().NameToObject(trenutniCenovnik.getNaziv());
+						cenovnik1.getCene().put(ldDatum, Integer.parseInt(tfCena.getText()));
 					}
 					
-					else {
-//						factoryMng.getTipSobeMng().edit(Integer.parseInt(tfBrojMesta.getText()), oldNaziv, tfTipSobe.getText(), Integer.parseInt(tfCena.getText()));
-					}
+					
 					((DetaljnaTabelaCenovnikaDodatneUsluge) parent) .refreshData();
-					dispose();
+					dispose();	
+					}
+					
+
+
 				}
-				
-			}
 		});
 		
 		
 		pack();
 		
 	}
-	
-	//___________________________________________________________________
 }
-	
+
