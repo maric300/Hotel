@@ -82,7 +82,15 @@ public class RezervacijaManager {
 		} catch (IOException e) {
 			return false;
 		}
+		
+		for (Rezervacija r : this.rezervacije) {
+			if ((r.getStatus().equals(Status.NA_CEKANJU) && LocalDate.parse(r.getCheckOutDateStr(), DateTimeFormatter.ofPattern("dd.MM.yyyy.")).isBefore(LocalDate.now())) || (r.getStatus().equals(Status.POTVRDJENA) && LocalDate.parse(r.getCheckOutDateStr(), DateTimeFormatter.ofPattern("dd.MM.yyyy.")).isBefore(LocalDate.now())) && r.getIdSobe() == -1) {
+				r.setStatus(Status.ODBIJENA);
+			}
+		}
 		return true;
+		
+		
 	}
 	
 	public boolean saveData() {

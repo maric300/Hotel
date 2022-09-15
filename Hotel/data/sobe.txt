@@ -1,5 +1,5 @@
 1;SLOBODNA;jednokrevetna;
 2;SLOBODNA;dvokrevetna;
-3;SLOBODNA;jednokrevetna;
+3;SPREMANJE;jednokrevetna;milica123
 4;SLOBODNA;jednokrevetna;
 5;SLOBODNA;jednokrevetna sa lezajem;

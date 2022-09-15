@@ -272,7 +272,7 @@ public class TabelaRezervacijaRecepcioner extends JFrame {
 					LocalDate ldIn = LocalDate.parse(s.getCheckInDateStr(), DateTimeFormatter.ofPattern("dd.MM.uuuu."));
 					if(ldIn.equals(LocalDate.now())) {
 						if (s.getStatus().equals(Status.POTVRDJENA) && s.getIdSobe() == -1) {
-							CheckInWindow ciw = new CheckInWindow(factoryMng, s);
+							CheckInWindow ciw = new CheckInWindow(TabelaRezervacijaRecepcioner.this ,factoryMng, s);
 							ciw.setVisible(true);
 						}
 						else {
@@ -302,31 +302,43 @@ public class TabelaRezervacijaRecepcioner extends JFrame {
 					Rezervacija s = factoryMng.getRezervacijaMng().IdToObject(id);
 					LocalDate ldOut = LocalDate.parse(s.getCheckOutDateStr(), DateTimeFormatter.ofPattern("dd.MM.uuuu."));
 					if(ldOut.equals(LocalDate.now())) {
-						HashMap<String, Integer> hmSobarice = new HashMap<String, Integer>();
-						for (Zaposlen z : factoryMng.getZaposlenManager().getZaposleni()) {
-							if (z.getPosao().equals(Posao.SOBARICA)) {
-								hmSobarice.put(z.getEmail(), 0);
+						if (s.getIdSobe() != -1) {
+							Soba sobaTemp = factoryMng.getSobaMng().IdToObject(s.getIdSobe());
+							if (sobaTemp.getStatus().equals(StatusSobe.ZAUZETO)) {
+							
+								HashMap<String, Integer> hmSobarice = new HashMap<String, Integer>();
+								for (Zaposlen z : factoryMng.getZaposlenManager().getZaposleni()) {
+									if (z.getPosao().equals(Posao.SOBARICA)) {
+										hmSobarice.put(z.getEmail(), 0);
+									}
+								}
+		
+								for (Soba soba : factoryMng.getSobaMng().getSobe()) {
+									if (soba.getStatus().equals(StatusSobe.SPREMANJE)) {
+										hmSobarice.replace(soba.getEmailSobarice(), hmSobarice.get(soba.getEmailSobarice()) + 1);
+									}
+								}
+								Integer min = -1;
+								String minSobarica = null;
+								for (String key : hmSobarice.keySet()) {
+									if (hmSobarice.get(key) < min || min == -1) {
+										min = hmSobarice.get(key);
+										minSobarica = key;
+									}
+								}
+								factoryMng.getSobaMng().IdToObject(s.getIdSobe()).setEmailSobarice(minSobarica);
+								factoryMng.getSobaMng().IdToObject(s.getIdSobe()).setStatus(StatusSobe.SPREMANJE);
+
+							}
+							else {
+								JOptionPane.showMessageDialog(null, "Rezervacija je vec check-outovana.", "Greska", JOptionPane.WARNING_MESSAGE);
+
 							}
 						}
+						else {
+							JOptionPane.showMessageDialog(null, "Rezervacija nema dodeljenu sobu.", "Greska", JOptionPane.WARNING_MESSAGE);
 
-						for (Soba soba : factoryMng.getSobaMng().getSobe()) {
-							if (soba.getStatus().equals(StatusSobe.SPREMANJE)) {
-								System.out.println(soba.getId());
-								hmSobarice.replace(soba.getEmailSobarice(), hmSobarice.get(soba.getEmailSobarice()) + 1);
-							}
 						}
-						Integer min = -1;
-						String minSobarica = null;
-						for (String key : hmSobarice.keySet()) {
-							if (hmSobarice.get(key) < min || min == -1) {
-								min = hmSobarice.get(key);
-								minSobarica = key;
-							}
-						}
-						factoryMng.getSobaMng().IdToObject(s.getIdSobe()).setEmailSobarice(minSobarica);
-						factoryMng.getSobaMng().IdToObject(s.getIdSobe()).setStatus(StatusSobe.SPREMANJE);
-
-
 					}
 					else {
 						JOptionPane.showMessageDialog(null, "Gost može da se check-outuje samo na poslednji dan rezervacije", "Greska", JOptionPane.WARNING_MESSAGE);

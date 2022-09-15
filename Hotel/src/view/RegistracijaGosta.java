@@ -291,7 +291,12 @@ public class RegistracijaGosta extends JFrame {
 					else {
 						factoryMng.getGostMng().edit(ime, prezime, pol, datumRodjenjaStr, adresa, brojTelefona, email, brPasosa);
 					}
-					((TabelaKorisnika) parent).refreshData();
+					
+					try {
+            ((TabelaKorisnika) parent).refreshData();
+          } catch (Exception e1) {
+        
+          }
 					dispose();
 					
 				}

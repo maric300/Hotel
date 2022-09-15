@@ -9,6 +9,7 @@ import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JList;
+import javax.swing.JWindow;
 import javax.swing.ListSelectionModel;
 
 import entity.DodatnaUsluga;
@@ -17,6 +18,7 @@ import entity.Soba;
 import entity.Soba.StatusSobe;
 import manage.ManagerFactory;
 import net.miginfocom.swing.MigLayout;
+import viewTable.TabelaRezervacijaRecepcioner;
 
 public class CheckInWindow extends JFrame {
 	
@@ -29,7 +31,7 @@ public class CheckInWindow extends JFrame {
 	private JLabel lbError;
 	
 	
-	public CheckInWindow(ManagerFactory factoryMng, Rezervacija rezervacija) {
+	public CheckInWindow(JFrame parent, ManagerFactory factoryMng, Rezervacija rezervacija) {
 		setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
 		setTitle("Check-in");
 		setLocationRelativeTo(null);
@@ -94,6 +96,7 @@ public class CheckInWindow extends JFrame {
 				Soba checkInSoba = factoryMng.getSobaMng().IdToObject(idSobe);
 				checkInSoba.setStatus(StatusSobe.ZAUZETO);
 				rezervacija.setIdSobe(idSobe);
+				((TabelaRezervacijaRecepcioner) parent).refreshData();
 				setVisible(false);
 				dispose();
 			}
